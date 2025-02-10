@@ -1,32 +1,26 @@
 import React from "react";
 import "../styles/Home.scss";
-import About from './About';
+import About from '../components/About';
+import SpecialOffers from '../components/SpecialOffers';
+import BurgerGallery from '../components/BurgerGallery';
+
 
 const Home = () => {
   return (
     <div className="home-page">
+
       {/* Landing Section */}
       <section id="landing" className="landing-section">
-        <div className="landing-content">
-          <h1>Welcome to Q-Burger</h1>
-          <p>Discover the best burgers in town!</p>
-        </div>
       </section>
 
       {/* About Section */}
       <About />
 
       {/* Special Offers Section */}
-      <section id="special-offers" className="page-section">
-        <h2>Special Offers</h2>
-        <p>Check out our current deals and promotions...</p>
-      </section>
+      <SpecialOffers />
 
       {/* Most Popular Section */}
-      <section id="most-popular" className="page-section">
-        <h2>Most Popular Burgers</h2>
-        <p>See what our customers love the most...</p>
-      </section>
+      <BurgerGallery />
 
       {/* Make Your Burger Section */}
       <section id="make-your-burger" className="page-section">
