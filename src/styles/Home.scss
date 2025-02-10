@@ -1,0 +1,68 @@
+.home-page {
+  scroll-behavior: smooth;
+}
+
+.landing-section {
+  height: 100vh;
+  background-image: url("../assets/images/Landing.png");
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: white;
+  padding: 0 20px;
+
+  .landing-content {
+    background: rgba(0, 0, 0, 0.5);
+    padding: 2rem;
+    border-radius: 10px;
+
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      font-size: 1.5rem;
+    }
+  }
+}
+
+.page-section {
+  min-height: 100vh;
+  padding: 4rem 2rem;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #ddd;
+
+  h2 {
+    margin-bottom: 2rem;
+    color: #d9534f;
+  }
+
+  p {
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+}
+
+// Mobile Responsiveness
+@media (max-width: 768px) {
+  .landing-section {
+    .landing-content {
+      h1 {
+        font-size: 2rem;
+      }
+
+      p {
+        font-size: 1.2rem;
+      }
+    }
+  }
+
+  .page-section {
+    padding: 2rem 1rem;
+  }
+}
