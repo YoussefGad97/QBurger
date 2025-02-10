@@ -3,6 +3,7 @@ import "../styles/Home.scss";
 import About from '../components/About';
 import SpecialOffers from '../components/SpecialOffers';
 import BurgerGallery from '../components/BurgerGallery';
+import MakeYourBurger from '../components/MakeYourBurger';
 
 
 const Home = () => {
@@ -23,11 +24,7 @@ const Home = () => {
       <BurgerGallery />
 
       {/* Make Your Burger Section */}
-      <section id="make-your-burger" className="page-section">
-        <h2>Create Your Burger</h2>
-        <p>Customize your perfect burger...</p>
-      </section>
-
+      <MakeYourBurger />
       {/* Testimonials Section */}
       <section id="testimonials" className="page-section">
         <h2>Customer Testimonials</h2>

@@ -112,7 +112,7 @@ const BurgerGallery = () => {
   ];
 
   return (
-    <section className="burger-gallery">
+    <section id="most-popular" className="burger-gallery">
       <h2>Most Popular </h2>
       <div className="gallery-container">
         {burgers.map((burger) => (
