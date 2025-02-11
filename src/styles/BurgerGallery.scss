@@ -1,11 +1,9 @@
 .burger-gallery {
   padding: 8rem 2rem;
-  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
-    url("../assets/images/GalleryBack.jpg");
+  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+    url("../assets/images/GalleryBack2.jpg");
   background-size: cover;
-  background-position: center top; 
-
-
+  background-position: center top;
 
   h2 {
     text-align: center;
@@ -30,20 +28,28 @@
     height: auto;
     padding: 1.5rem;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    background: linear-gradient(to bottom, rgba(3, 156, 216, 0) 20%, rgb(0, 0, 0) 100%);
+    background: linear-gradient(
+      to bottom,
+      rgba(3, 156, 216, 0) 20%,
+      rgb(0, 0, 0) 100%
+    );
     border-radius: 10px;
     transition: transform 0.3s ease;
     position: relative;
     overflow: hidden;
 
     &::before {
-      content: '';
+      content: "";
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
       height: 50px;
-      background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(255, 0, 0, 0) 100%);
+      background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0) 0%,
+        rgba(255, 0, 0, 0) 100%
+      );
       pointer-events: none;
     }
 
@@ -58,7 +64,6 @@
       border-radius: 8px;
       margin-bottom: 1rem;
       position: relative;
-
 
       img {
         width: 100%;
@@ -100,7 +105,7 @@
           padding: 0.5rem;
           min-width: 80px;
           text-align: center;
-          
+
           .type {
             display: block;
             font-size: 0.8rem;

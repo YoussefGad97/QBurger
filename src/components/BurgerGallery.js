@@ -1,13 +1,13 @@
 import React from "react";
 import "../styles/BurgerGallery.scss";
-import Burger1 from "../assets/images/ClassicBurger.png";
-import Burger2 from "../assets/images/MushroomBurger.png";
-import Burger3 from "../assets/images/BaconBurger.png";
-import Burger4 from "../assets/images/WorldEnd2.png";
-import Burger5 from "../assets/images/ChickenZinger.png";
-import Burger6 from "../assets/images/ChickenRanch.png";
-import Burger7 from "../assets/images/ClassicChicken.png";
-import Burger8 from "../assets/images/WorldEndChicken.png";
+import Burger1 from "../assets/Sandimages/ClassicBurger.png";
+import Burger2 from "../assets/Sandimages/MushroomBurger.png";
+import Burger3 from "../assets/Sandimages/BaconBurger.png";
+import Burger4 from "../assets/Sandimages/WorldEnd.png";
+import Burger5 from "../assets/Sandimages/ChickenZinger.png";
+import Burger6 from "../assets/Sandimages/ChickenRanch.png";
+import Burger7 from "../assets/Sandimages/ClassicChicken.png";
+import Burger8 from "../assets/Sandimages/WorldEndChicken.png";
 
 const BurgerGallery = () => {
   const burgers = [
