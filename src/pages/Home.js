@@ -6,6 +6,7 @@ import BurgerGallery from '../components/BurgerGallery';
 import MakeYourBurger from '../components/MakeYourBurger';
 import ScrollToTop from '../components/ScrollToTop';
 import Testimonials from '../components/Testimonials';
+import Contact from '../components/Contact';
 
 const Home = () => {
   return (
@@ -31,10 +32,7 @@ const Home = () => {
       <Testimonials />
 
       {/* Contact Section */}
-      <section id="contact" className="page-section">
-        <h2>Contact Us</h2>
-        <p>Get in touch with us...</p>
-      </section>
+      <Contact />
 
       <ScrollToTop />
     </div>
