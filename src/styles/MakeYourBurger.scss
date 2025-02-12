@@ -68,23 +68,30 @@
   overflow-y: auto;
   padding-right: 0.5rem;
   
+  /* Modern scrollbar styling */
   &::-webkit-scrollbar {
-    width: 8px;
+    width: 6px;
+    background: transparent;
   }
   
   &::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    margin: 5px;
   }
   
   &::-webkit-scrollbar-thumb {
-    background: #e67e22;
-    border-radius: 4px;
+    background: rgba(230, 126, 34, 0.8);
+    border-radius: 10px;
     
     &:hover {
-      background: #d35400;
+      background: rgba(230, 126, 34, 1);
     }
   }
+  
+  /* Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(230, 126, 34, 0.8) rgba(255, 255, 255, 0.1);
 }
 
 .ingredient-button {
@@ -199,6 +206,7 @@
   max-height: calc(100% - 160px);
   overflow: visible;
   pointer-events: auto;
+  gap: 0;
 }
 
 .ingredient-layer {
@@ -206,6 +214,7 @@
   width: 100%;
   transition: all 0.3s ease;
   transform-origin: center center;
+  margin-top: initial;
   
   &::before {
     content: '';
@@ -222,6 +231,7 @@
     display: block;
     transition: all 0.3s ease;
     pointer-events: none;
+    transform-origin: center center;
   }
 }
 

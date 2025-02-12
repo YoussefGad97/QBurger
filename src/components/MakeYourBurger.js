@@ -237,7 +237,7 @@ const MakeYourBurger = () => {
   };
 
   return (
-    <div className="burger-builder">
+    <div id="make-your-burger" className="burger-builder">
       <div className="burger-builder__header">
         <h1>Build Your Perfect Burger</h1>
         <div className="header-controls">
