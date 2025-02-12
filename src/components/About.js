@@ -11,17 +11,19 @@ const About = () => {
           <div className="image-content">
             <img src={AboutImg} alt="About Q-Burger" />
           </div>
-          <div className="text-content">
-            <p>
-              At Q-Burger, we're passionate about crafting the perfect burger
-              experience. Using only the freshest ingredients and innovative
-              recipes, we bring you flavors that will leave you craving more.
-            </p>
-            <p>
-              Founded in 2023, our mission is to redefine burger culture by
-              combining traditional techniques with modern twists. Join us on
-              this delicious journey!
-            </p>
+          <div className="text-container">
+            <div className="text-content">
+              <p>
+                At Q-Burger, we're passionate about crafting the perfect burger
+                experience. Using only the freshest ingredients and innovative
+                recipes, we bring you flavors that will leave you craving more.
+              </p>
+              <p>
+                Founded in 2023, our mission is to redefine burger culture by
+                combining traditional techniques with modern twists. Join us on
+                this delicious journey!
+              </p>
+            </div>
           </div>
         </div>
       </div>
