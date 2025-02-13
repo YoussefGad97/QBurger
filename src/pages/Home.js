@@ -1,20 +1,19 @@
 import React from "react";
 import "../styles/Home.scss";
-import About from '../components/About';
-import SpecialOffers from '../components/SpecialOffers';
-import BurgerGallery from '../components/BurgerGallery';
-import MakeYourBurger from '../components/MakeYourBurger';
-import ScrollToTop from '../components/ScrollToTop';
-import Testimonials from '../components/Testimonials';
-import Contact from '../components/Contact';
+import About from "../components/About";
+import SpecialOffers from "../components/SpecialOffers";
+import BurgerGallery from "../components/BurgerGallery";
+import MakeYourBurger from "../components/MakeYourBurger";
+import ScrollToTop from "../components/ScrollToTop";
+import Testimonials from "../components/Testimonials";
+import Contact from "../components/Contact";
+import Footer from "../components/footer";
 
 const Home = () => {
   return (
     <div className="home-page">
-
       {/* Landing Section */}
-      <section id="landing" className="landing-section">
-      </section>
+      <section id="landing" className="landing-section"></section>
 
       {/* About Section */}
       <About />
@@ -33,6 +32,9 @@ const Home = () => {
 
       {/* Contact Section */}
       <Contact />
+
+      {/* Footer Section */}
+      <Footer />
 
       <ScrollToTop />
     </div>
