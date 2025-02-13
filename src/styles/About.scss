@@ -18,24 +18,25 @@
 
   .content-wrapper {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    justify-content: center;
-    height: 100%;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
   }
 
   .text-container {
     display: flex;
     align-items: center;
-    justify-content: center;
-    width: 100%;
-    color:white;
-    font-size:1.3rem;
+    justify-content: flex-end;
+    width: 50%;
+    color: white;
+    font-size: 1.3rem;
   }
 
   .text-content {
-    max-width: 800px;
-    text-align: center;
+    max-width: 600px;
+    text-align: left;
   }
 
   h2 {
@@ -46,37 +47,49 @@
   }
 
   .image-content {
+    width: 50%;
+    display: flex;
+    justify-content: flex-start;
+
     img {
       width: 100%;
       max-width: 400px;
       border-radius: 10px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      display: flex;
-      justify-content: center;
     }
   }
 
   // Mobile Responsiveness
   @media (max-width: 768px) {
-    padding: 4rem 1rem; // Adjust padding for mobile
+    padding: 4rem 1rem;
 
     .content-wrapper {
       flex-direction: column;
       align-items: center;
     }
 
-    .text-content {
-      text-align: left;
-      font-size: 1rem; // Reduce font size for mobile
+    .text-container {
+      width: 100%;
+      justify-content: center;
     }
 
-    .image-content img {
-      max-width: 250px; // Make the burger image smaller
-      margin-top: 20px; // Add spacing between text and image
+    .text-content {
+      text-align: left;
+      font-size: 1rem;
+    }
+
+    .image-content {
+      width: 100%;
+      justify-content: center;
+
+      img {
+        max-width: 250px;
+        margin-top: 20px;
+      }
     }
 
     h2 {
-      font-size: 2rem; // Reduce heading size for mobile
+      font-size: 2rem;
     }
   }
 }
