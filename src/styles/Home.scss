@@ -39,6 +39,13 @@
   color: white;
   padding: 0 20px;
 
+  // Mobile Responsiveness
+  @media (max-width: 768px) {
+    background-image: url("../assets/images/MobLand.png"); // Change this to your desired mobile image
+    background-size: contain; // Adjust size as needed
+    height:100vh;
+  }
+
   .landing-content {
     background: rgba(0, 0, 0, 0.5);
     padding: 2rem;

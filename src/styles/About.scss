@@ -57,15 +57,26 @@
   }
 
   // Mobile Responsiveness
-  @media (min-width: 768px) {
-    padding: 6rem 2rem;
+  @media (max-width: 768px) {
+    padding: 4rem 1rem; // Adjust padding for mobile
+
     .content-wrapper {
-      flex-direction: row;
+      flex-direction: column;
       align-items: center;
     }
 
     .text-content {
       text-align: left;
+      font-size: 1rem; // Reduce font size for mobile
+    }
+
+    .image-content img {
+      max-width: 250px; // Make the burger image smaller
+      margin-top: 20px; // Add spacing between text and image
+    }
+
+    h2 {
+      font-size: 2rem; // Reduce heading size for mobile
     }
   }
 }
