@@ -76,9 +76,7 @@
   gap: 0.5rem;
 }
 
-.icon-button {
-  padding: 0.3rem;
-}
+
 
 .reset-button {
   background-color: #e74c3c;
@@ -151,4 +149,9 @@
 
 .icon-button {
   color: white;
+  background-color: orange;
+  border: 1px solid transparent;
+  border-radius:5rem;
+  padding: 0.3rem;
+
 }
