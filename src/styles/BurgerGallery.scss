@@ -80,10 +80,12 @@
       text-align: center;
 
       h3 {
-        color: #f97910;
-        font-size: 1.2rem;
-        margin-bottom: 0.5rem;
-        font-weight: bold;
+        color: #e67e22;
+        font-size: 1.5rem;
+        margin-bottom: 0.8rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
       }
 
       p {
@@ -126,15 +128,25 @@
       .order-btn {
         width: 100%;
         padding: 0.8rem;
-        background-color: #f97910;
+        background-color: #e67e22;
         color: white;
         border: none;
-        border-radius: 5px;
+        border-radius: 8px;
         cursor: pointer;
-        transition: background-color 0.3s ease;
+        transition: all 0.3s ease;
+        font-size: 1rem;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
 
         &:hover {
-          background-color: darken(#f97910, 10%);
+          background-color: #d35400;
+          transform: translateY(-2px);
+          box-shadow: 0 4px 8px rgba(230, 126, 34, 0.2);
+        }
+
+        &:active {
+          transform: translateY(0);
         }
       }
     }
@@ -178,6 +190,30 @@
   @media (max-width: 480px) {
     .gallery-container {
       grid-template-columns: 1fr; // Single column for very small screens
+    }
+  }
+
+  .burger-content {
+    .MuiTypography-root {
+      margin: 0;
+      font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+      font-weight: 400;
+      color: white;
+      font-size: 0.8rem;
+      line-height: 1.5;
+      letter-spacing: 0.00938em;
+    }
+
+    .burger-title {
+      // Custom styles for burger titles
+    }
+
+    .burger-description {
+      // Custom styles for descriptions
+    }
+
+    .burger-price {
+      // Custom styles for prices
     }
   }
 }

@@ -1,8 +1,9 @@
 .order-dialog {
   .MuiDialog-paper {
-    min-width: 320px;
-    max-width: 400px;
-    padding: 16px;
+    min-width: 600px;
+    max-width: 900px;
+    width: 90%;
+    padding: 24px;
   }
 
   .burger-preview {
@@ -12,12 +13,23 @@
     margin-bottom: 24px;
 
     img {
-      width: 200px;
-      height: 200px;
+      width: 300px;
+      height: 300px;
       object-fit: cover;
       border-radius: 8px;
       margin-bottom: 16px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+
+      &:hover {
+        transform: scale(1.05);
+      }
     }
+  }
+
+  .section-title {
+    color: #e67e22;
+    margin-bottom: 16px;
   }
 
   .patty-option {
@@ -30,6 +42,53 @@
 
     .MuiTypography-body2 {
       color: #e67e22;
+    }
+  }
+
+  .quantity-selector {
+    margin: 24px 0;
+
+    .quantity-controls {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-top: 8px;
+
+      button {
+        min-width: 40px;
+        height: 40px;
+        border-radius: 20px;
+        color: #e67e22;
+        border: 2px solid #e67e22;
+
+        &:hover {
+          background-color: rgba(230, 126, 34, 0.1);
+        }
+      }
+    }
+  }
+
+  .special-instructions {
+    margin: 24px 0;
+
+    .MuiOutlinedInput-root {
+      &.Mui-focused fieldset {
+        border-color: #e67e22;
+      }
+    }
+
+    .MuiInputLabel-root.Mui-focused {
+      color: #e67e22;
+    }
+  }
+
+  .price-summary {
+    text-align: right;
+    margin-top: 16px;
+    
+    .MuiTypography-h6 {
+      color: #e67e22;
+      font-weight: 600;
     }
   }
 
