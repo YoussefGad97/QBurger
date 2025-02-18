@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { TextField, Button, Container, Typography, Box, IconButton, InputAdornment, Dialog, DialogTitle, DialogContent } from '@mui/material';
 import { useAuth } from '../contexts/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import "../styles/Login.scss";
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
@@ -9,35 +9,39 @@ const Login = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    username: '',
+    identifier: '',
     password: ''
   });
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showRecovery, setShowRecovery] = useState(false);
   const [recoveryData, setRecoveryData] = useState({ identifier: '', username: '' });
   const [recoveryError, setRecoveryError] = useState('');
   const [recoverySuccess, setRecoverySuccess] = useState('');
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    
-    const existingUsers = JSON.parse(localStorage.getItem('users')) || [];
-    const user = existingUsers.find(u => 
-      u.username === formData.username && 
-      u.password === formData.password
-    );
-
-    if (!user) {
-      setError('Invalid username or password');
-      return;
-    }
-
-    login(user);
-    navigate('/');
-  };
-
   const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    setSuccess(false);
+    setLoading(true);
+
+    try {
+      await login(formData.identifier, formData.password);
+      setSuccess(true);
+      setTimeout(() => {
+        navigate('/');
+      }, 1500);
+    } catch (err) {
+      setError(err.message);
+      setSuccess(false);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleRecovery = (e) => {
     e.preventDefault();
@@ -59,34 +63,37 @@ const Login = () => {
   };
 
   return (
-    <div className="login-page">
-      <Container maxWidth="sm" className="auth-container">
+    <Container maxWidth={false} className="login-page">
+      <Box className="auth-container">
         <Typography variant="h4" className="auth-title">
           Login
         </Typography>
+        
         <form onSubmit={handleSubmit}>
           <TextField
             fullWidth
-            label="Username"
-            className="auth-input"
+            label="Email, Username, or Phone"
             margin="normal"
-            value={formData.username}
-            onChange={(e) => setFormData({...formData, username: e.target.value})}
+            value={formData.identifier}
+            onChange={(e) => setFormData({...formData, identifier: e.target.value})}
             required
+            className="auth-input"
+            placeholder="Enter your email, username, or phone number"
           />
           <TextField
             fullWidth
             label="Password"
             type={showPassword ? 'text' : 'password'}
-            className="auth-input"
             margin="normal"
             value={formData.password}
             onChange={(e) => setFormData({...formData, password: e.target.value})}
             required
+            className="auth-input"
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
                   <IconButton
+                    aria-label="toggle password visibility"
                     onClick={handleClickShowPassword}
                     edge="end"
                     className="password-toggle"
@@ -97,27 +104,40 @@ const Login = () => {
               ),
             }}
           />
-          {error && <Typography className="error-message">{error}</Typography>}
-          <div className="button-container">
-            <Button
-              type="submit"
-              variant="contained"
-              className="auth-button"
-            >
-              Login
-            </Button>
-          </div>
+          
+          {error && (
+            <Typography color="error" align="center" sx={{ mt: 1 }}>
+              {error}
+            </Typography>
+          )}
+
+          {success && (
+            <Typography color="success" align="center" sx={{ mt: 1 }}>
+              Login successful! Redirecting...
+            </Typography>
+          )}
+
+          <Button
+            type="submit"
+            variant="contained"
+            className="auth-button"
+            disabled={loading || success}
+          >
+            {loading ? 'Logging in...' : success ? 'Success!' : 'Login'}
+          </Button>
+
+          <Typography className="auth-link">
+            Don't have an account? <Link to="/signup">Sign Up</Link>
+          </Typography>
         </form>
-        <Typography className="auth-link">
-          Don't have an account? <Button href="/signup">Sign Up</Button>
-        </Typography>
+
         <Button 
           className="forgot-password" 
           onClick={() => setShowRecovery(true)}
         >
           Forgot Password?
         </Button>
-      </Container>
+      </Box>
 
       {/* Recovery Dialog */}
       <Dialog open={showRecovery} onClose={() => setShowRecovery(false)}>
@@ -154,7 +174,7 @@ const Login = () => {
           </form>
         </DialogContent>
       </Dialog>
-    </div>
+    </Container>
   );
 };
 

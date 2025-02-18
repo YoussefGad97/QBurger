@@ -47,6 +47,10 @@ function Navbar() {
     { id: 'testimonials', text: 'Testimonials' }
   ];
 
+  // Add better null checks when accessing user properties
+  const displayName = user?.displayName || user?.username || 'U';
+  const firstLetter = displayName.charAt(0).toUpperCase();
+
   return (
     <nav className={`navbar navbar-expand-lg custom-navbar ${visible ? "visible" : "hidden"}`}>
       <div className="container-fluid">
@@ -93,7 +97,7 @@ function Navbar() {
                   aria-label="user menu"
                 >
                   <Avatar 
-                    alt={user.username}
+                    alt={displayName}
                     sx={{ 
                       bgcolor: '#F87810',
                       width: 40,
@@ -101,7 +105,7 @@ function Navbar() {
                       border: '2px solid white'
                     }}
                   >
-                    {user.username[0].toUpperCase()}
+                    {firstLetter}
                   </Avatar>
                 </IconButton>
 
