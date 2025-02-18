@@ -1,7 +1,7 @@
 .burger-builder {
   max-width: 100%;
   margin: 0 auto;
-  padding: 4rem;
+  padding: 5rem;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -23,20 +23,21 @@
   max-height: 300px;
   width: 100%;
   overflow-y: auto;
-  background-color: white;
-  border: 1px solid #ccc;
+  background-color: black;
+  color:white;
+  border: 1px solid transparent;
   border-radius: 5px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  padding: 0.5rem;
+  padding: 1rem;
   margin-top: 1rem;
 }
 
 .ingredient-item {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  justify-content: center;
+  align-items: flex-start;
   padding: 0.5rem;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #eeeeee59;
 
   &:last-child {
     border-bottom: none;
@@ -44,6 +45,14 @@
 
   span {
     flex-grow: 1;
+  }
+
+  .price {
+    display:flex;
+    justify-content: space-between;
+    align-self: center;
+    font-weight: bold;
+    color: #2ecc71;
   }
 
   button {
@@ -76,8 +85,6 @@
   gap: 0.5rem;
 }
 
-
-
 .reset-button {
   background-color: #e74c3c;
   color: white;
@@ -87,7 +94,8 @@
   cursor: pointer;
   margin-top: 1rem;
   transition: background-color 0.2s ease, transform 0.1s ease;
-  width: 100%;
+  width: auto;
+  margin-right: 1rem;
   text-align: center;
   font-size: 1rem;
   font-weight: bold;
@@ -106,6 +114,33 @@
     outline: none;
     box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.5);
   }
+}
+
+.order-button {
+  @extend .reset-button;
+  background-color: #2ecc71;
+  
+  &:hover {
+    background-color: #27ae60;
+  }
+  
+  &:focus {
+    box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.5);
+  }
+}
+
+.total-price {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #2ecc71;
+  margin: 1rem 0;
+  text-align: center;
+}
+
+.button-group {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
 }
 
 .burger-title {
@@ -131,7 +166,7 @@
 .burger-image {
   width: 20vw;
   max-width: 300px;
-  height: 100px;
+  height: 110px;
   display: block;
 }
 
@@ -153,5 +188,4 @@
   border: 1px solid transparent;
   border-radius:5rem;
   padding: 0.3rem;
-
 }

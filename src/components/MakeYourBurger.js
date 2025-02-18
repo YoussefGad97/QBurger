@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { Box, Typography, IconButton, Grid } from '@mui/material';
 import { ArrowLeft, ArrowRight } from '@mui/icons-material';
 import "../styles/MakeYourBurger.scss";
@@ -24,26 +24,26 @@ import OnionRings from "../assets/Ingredients/Rings.png";
 import BotBun1 from "../assets/Ingredients/SesameBot.png";
 
 const ingredientsList = [
-  { name: "Top Bun", image: TopBun1 },
-  { name: "Beef", image: Beef },
-  { name: "Chicken", image: Chicken },
-  { name: "Bacon", image: Bacon },
-  { name: "Cheese", image: Cheese },
-  { name: "Jalapeno", image: Jalapeno },
-  { name: "Thousand Island", image: ThousandIsland },
-  { name: "Ketchup", image: Ketchup },
-  { name: "Mustard", image: Mustard },
-  { name: "Mayonnaise", image: Mayonnaise },
-  { name: "Ranch", image: Ranch },
-  { name: "Tasty", image: Tasty },
-  { name: "Lettuce", image: Lettuce },
-  { name: "Tomato", image: Tomato },
-  { name: "Mozzarella", image: Mozzarella },
-  { name: "Mushroom", image: Mushroom },
-  { name: "Onion", image: Onion },
-  { name: "Pickles", image: Pickles },
-  { name: "Onion Rings", image: OnionRings },
-  { name: "Bottom Bun", image: BotBun1 }
+  { name: "Top Bun", image: TopBun1, price: 2.00 },
+  { name: "Beef", image: Beef, price: 5.00 },
+  { name: "Chicken", image: Chicken, price: 4.50 },
+  { name: "Bacon", image: Bacon, price: 3.00 },
+  { name: "Cheese", image: Cheese, price: 1.50 },
+  { name: "Jalapeno", image: Jalapeno, price: 0.50 },
+  { name: "Thousand Island", image: ThousandIsland, price: 0.75 },
+  { name: "Ketchup", image: Ketchup, price: 0.25 },
+  { name: "Mustard", image: Mustard, price: 0.25 },
+  { name: "Mayonnaise", image: Mayonnaise, price: 0.50 },
+  { name: "Ranch", image: Ranch, price: 0.50 },
+  { name: "Tasty", image: Tasty, price: 0.50 },
+  { name: "Lettuce", image: Lettuce, price: 0.25 },
+  { name: "Tomato", image: Tomato, price: 0.25 },
+  { name: "Mozzarella", image: Mozzarella, price: 1.00 },
+  { name: "Mushroom", image: Mushroom, price: 0.50 },
+  { name: "Onion", image: Onion, price: 0.25 },
+  { name: "Pickles", image: Pickles, price: 0.25 },
+  { name: "Onion Rings", image: OnionRings, price: 0.50 },
+  { name: "Bottom Bun", image: BotBun1, price: 2.00 }
 ];
 
 const getRandomIndex = () => Math.floor(Math.random() * (ingredientsList.length - 2)) + 1;
@@ -61,6 +61,17 @@ const MakeYourBurger = () => {
 
   const [currentIndices, setCurrentIndices] = useState(defaultIndices);
   const [currentPosition, setCurrentPosition] = useState(1); // Start from index 1 (position 2)
+  const [totalPrice, setTotalPrice] = useState(0);
+
+  const calculateTotal = useMemo(() => {
+    return currentIndices
+      .filter(index => index !== null)
+      .reduce((sum, index) => sum + (ingredientsList[index]?.price || 0), 0);
+  }, [currentIndices]);
+
+  const handleOrderNow = () => {
+    alert(`Order placed! Total: $${calculateTotal.toFixed(2)}`);
+  };
 
   const handleAddIngredient = (ingredient) => {
     setCurrentIndices((prevIndices) => {
@@ -112,14 +123,23 @@ const MakeYourBurger = () => {
             {ingredientsList.map((ingredient, index) => (
               <div key={index} className="ingredient-item">
                 <span>{ingredient.name}</span>
+                <span className="price">${ingredient.price.toFixed(2)}</span>
                 <button onClick={() => handleAddIngredient(ingredient)}>+</button>
                 <button onClick={() => handleRemoveIngredient(index)}>x</button>
               </div>
             ))}
           </div>
-          <button className="reset-button" onClick={handleResetBurger}>
-            Reset Burger
-          </button>
+          <div className="total-price">
+            Total: ${calculateTotal.toFixed(2)}
+          </div>
+          <div className="button-group">
+            <button className="reset-button" onClick={handleResetBurger}>
+              Reset Burger
+            </button>
+            <button className="order-button" onClick={handleOrderNow}>
+              Order Now
+            </button>
+          </div>
         </Grid>
         <Grid item xs={12} md={8}>
           <Box className="burger-controls">
