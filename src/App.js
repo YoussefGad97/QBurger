@@ -9,42 +9,31 @@ import MakeYourBurger from './components/MakeYourBurger';
 import SignUp from './components/SignUp';
 import Login from './components/Login';
 
-function About() {
-  return <h1>About Us</h1>;
-}
-
-function SpecialOffers() {
-  return <h1>Special Offers</h1>;
-}
-
-function MostPopular() {
-  return <h1>Most Popular Burgers</h1>;
-}
-
-function Contact() {
-  return <h1>Contact Us</h1>;
-}
-
-function Testimonials() {
-  return <h1>Customer Testimonials</h1>;
-}
+// Move page components to separate files
+import About from './components/About';
+import SpecialOffers from './components/SpecialOffers';
+import MostPopular from './components/BurgerGallery';
+import Testimonials from './components/Testimonials';
+import Profile from './components/Profile';
 
 function App() {
   return (
     <AuthProvider>
       <Router>
         <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/special-offers" element={<SpecialOffers />} />
-          <Route path="/most-popular" element={<MostPopular />} />
-          <Route path="/make-your-burger" element={<MakeYourBurger />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/testimonials" element={<Testimonials />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/login" element={<Login />} />
-        </Routes>
+        <main className="main-content">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/special-offers" element={<SpecialOffers />} />
+            <Route path="/most-popular" element={<MostPopular />} />
+            <Route path="/make-your-burger" element={<MakeYourBurger />} />
+            <Route path="/testimonials" element={<Testimonials />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/profile" element={<Profile />} />
+          </Routes>
+        </main>
       </Router>
     </AuthProvider>
   );

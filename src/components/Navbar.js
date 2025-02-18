@@ -1,19 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Link as ScrollLink } from "react-scroll";
 import { useAuth } from "../contexts/AuthContext";
 import "../styles/Navbar.scss";
 import Logo from "../assets/images/logo.jpg";
+import { IconButton, Menu, MenuItem, Avatar } from '@mui/material';
 
 function Navbar() {
   const [prevScrollPos, setPrevScrollPos] = useState(0);
   const [visible, setVisible] = useState(true);
   const { user, logout } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
+  const [anchorEl, setAnchorEl] = useState(null);
 
-  // Only show scroll behavior on home page
   const isHomePage = location.pathname === '/';
 
+  // Handle scroll behavior
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollPos = window.pageYOffset;
@@ -25,17 +28,33 @@ function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [prevScrollPos, visible]);
 
+  // Menu handlers
+  const handleMenuOpen = (event) => setAnchorEl(event.currentTarget);
+  const handleMenuClose = () => setAnchorEl(null);
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+    handleMenuClose();
+  };
+
+  // Navigation items
+  const navItems = [
+    { id: 'landing', text: 'Home' },
+    { id: 'about', text: 'About' },
+    { id: 'special-offers', text: 'Special Offers' },
+    { id: 'most-popular', text: 'Most Popular' },
+    { id: 'make-your-burger', text: 'Make Your Burger' },
+    { id: 'testimonials', text: 'Testimonials' }
+  ];
+
   return (
-    <nav
-      className={`navbar navbar-expand-lg custom-navbar ${
-        visible ? "visible" : "hidden"
-      }`}
-    >
+    <nav className={`navbar navbar-expand-lg custom-navbar ${visible ? "visible" : "hidden"}`}>
       <div className="container-fluid">
         <Link className="navbar-brand" to="/">
           <img src={Logo} alt="Logo" className="navbar-logo" />
           Q-Burger
         </Link>
+
         <button
           className="navbar-toggler"
           type="button"
@@ -44,135 +63,60 @@ function Navbar() {
         >
           <span className="navbar-toggler-icon"></span>
         </button>
-        <div
-          className="collapse navbar-collapse justify-content-end"
-          id="navbarNav"
-        >
+
+        <div className="collapse navbar-collapse justify-content-end" id="navbarNav">
           <ul className="navbar-nav">
-            {isHomePage ? (
-              // Scroll links for home page
-              <>
-                <li className="nav-item">
+            {navItems.map((item) => (
+              <li className="nav-item" key={item.id}>
+                {isHomePage ? (
                   <ScrollLink
                     className="nav-link"
-                    to="landing"
+                    to={item.id}
                     smooth={true}
                     duration={500}
                   >
-                    Home
+                    {item.text}
                   </ScrollLink>
-                </li>
-                <li className="nav-item">
-                  <ScrollLink
-                    className="nav-link"
-                    to="about"
-                    smooth={true}
-                    duration={500}
-                  >
-                    About
-                  </ScrollLink>
-                </li>
-                <li className="nav-item">
-                  <ScrollLink
-                    className="nav-link"
-                    to="special-offers"
-                    smooth={true}
-                    duration={500}
-                  >
-                    Special Offers
-                  </ScrollLink>
-                </li>
-                <li className="nav-item">
-                  <ScrollLink
-                    className="nav-link"
-                    to="most-popular"
-                    smooth={true}
-                    duration={500}
-                  >
-                    Most Popular
-                  </ScrollLink>
-                </li>
-                <li className="nav-item">
-                  <ScrollLink
-                    className="nav-link"
-                    to="make-your-burger"
-                    smooth={true}
-                    duration={500}
-                  >
-                    Make Your Burger
-                  </ScrollLink>
-                </li>
-                <li className="nav-item">
-                  <ScrollLink
-                    className="nav-link"
-                    to="testimonials"
-                    smooth={true}
-                    duration={500}
-                  >
-                    Testimonials
-                  </ScrollLink>
-                </li>
-              </>
-            ) : (
-              // Regular router links for other pages
-              <>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/">
-                    Home
+                ) : (
+                  <Link className="nav-link" to={`/#${item.id}`}>
+                    {item.text}
                   </Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/about">
-                    About
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/special-offers">
-                    Special Offers
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/most-popular">
-                    Most Popular
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/make-your-burger">
-                    Make Your Burger
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/testimonials">
-                    Testimonials
-                  </Link>
-                </li>
-              </>
-            )}
+                )}
+              </li>
+            ))}
+
             {user ? (
-              <>
-                <li className="nav-item dropdown">
-                  <a
-                    className="nav-link dropdown-toggle"
-                    href="#"
-                    role="button"
-                    data-bs-toggle="dropdown"
+              <li className="nav-item">
+                <IconButton
+                  onClick={handleMenuOpen}
+                  sx={{ p: 0, ml: 2 }}
+                  aria-label="user menu"
+                >
+                  <Avatar 
+                    alt={user.username}
+                    sx={{ 
+                      bgcolor: '#F87810',
+                      width: 40,
+                      height: 40,
+                      border: '2px solid white'
+                    }}
                   >
-                    <div className="d-flex align-items-center">
-                      <div className="user-avatar me-2">
-                        {user.username[0].toUpperCase()}
-                      </div>
-                      {user.username}
-                    </div>
-                  </a>
-                  <ul className="dropdown-menu dropdown-menu-end">
-                    <li>
-                      <button className="dropdown-item" onClick={logout}>
-                        Logout
-                      </button>
-                    </li>
-                  </ul>
-                </li>
-              </>
+                    {user.username[0].toUpperCase()}
+                  </Avatar>
+                </IconButton>
+
+                <Menu
+                  anchorEl={anchorEl}
+                  open={Boolean(anchorEl)}
+                  onClose={handleMenuClose}
+                  anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                  transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+                >
+                  <MenuItem onClick={() => navigate('/profile')}>Profile</MenuItem>
+                  <MenuItem onClick={() => navigate('/orders')}>Orders</MenuItem>
+                  <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                </Menu>
+              </li>
             ) : (
               <>
                 <li className="nav-item">

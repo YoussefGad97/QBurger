@@ -3,7 +3,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: url("../assets/images/GalleryBack.jpg") no-repeat center center
+  background: url("../assets/images/GalleryBack2.jpg") no-repeat center center
     fixed;
   background-size: cover;
   padding: 2rem;
@@ -26,10 +26,23 @@
 
     .auth-input {
       margin: 1rem 0;
+
+      .password-toggle {
+        color: #e67e22 !important;
+        padding: 0 8px !important;
+
+        &:hover {
+          background-color: rgba(230, 126, 34, 0.1) !important;
+        }
+      }
+
+      .MuiOutlinedInput-root {
+        padding-right: 8px !important;
+      }
     }
 
     .auth-button {
-      margin-top: 2rem !important;
+      margin-top: 1rem !important;
       padding: 12px 0 !important;
       font-size: 1.1rem !important;
       background: #e67e22 !important;
@@ -65,3 +78,28 @@
 }
 
 // Add any login-specific styles below
+
+.forgot-password {
+  display: block;
+  text-align: center;
+  margin-top: 1rem !important;
+  color: #e67e22 !important;
+  text-transform: none !important;
+  font-size: 0.9rem !important;
+  
+  &:hover {
+    text-decoration: underline;
+    background: none !important;
+  }
+}
+
+// Add to dialog styles
+.MuiDialog-paper {
+  padding: 2rem;
+  border-radius: 15px !important;
+  
+  .auth-button {
+    margin-top: 1rem !important;
+    width: 100% !important;
+  }
+}
