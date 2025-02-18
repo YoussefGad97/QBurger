@@ -69,7 +69,14 @@ export function AuthProvider({ children }) {
         throw new Error('Invalid credentials');
       }
 
-      localStorage.setItem('currentUser', JSON.stringify(user));
+      // Only store essential user data
+      const minimalUserData = {
+        uid: user.uid,
+        email: user.email,
+        // Add other essential fields
+      };
+
+      localStorage.setItem('currentUser', JSON.stringify(minimalUserData));
       setUser(user);
       return user;
     } catch (error) {
@@ -151,6 +158,15 @@ export function AuthProvider({ children }) {
       throw new Error(error.message || 'Failed to update profile');
     }
   };
+
+  function cleanupLocalStorage() {
+    const keys = Object.keys(localStorage);
+    keys.forEach(key => {
+      if (!['currentUser', 'authToken'].includes(key)) {
+        localStorage.removeItem(key);
+      }
+    });
+  }
 
   const value = {
     user,
