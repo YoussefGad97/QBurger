@@ -103,7 +103,7 @@ const MakeYourBurger = () => {
 
   return (
     <Box className="burger-builder">
-      <Grid container spacing={4}>
+      <Grid container className="bigboy" spacing={4}>
         <Grid item xs={12} md={4}>
           <Typography variant="h3" align="center" gutterBottom className="burger-title">
             Build Your Own Burger
