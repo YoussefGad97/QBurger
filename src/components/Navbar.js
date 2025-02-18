@@ -5,6 +5,9 @@ import { useAuth } from "../contexts/AuthContext";
 import "../styles/Navbar.scss";
 import Logo from "../assets/images/logo.jpg";
 import { IconButton, Menu, MenuItem, Avatar } from '@mui/material';
+import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
+import Badge from '@mui/material/Badge';
+import { useBasket } from '../contexts/BasketContext';
 
 function Navbar() {
   const [prevScrollPos, setPrevScrollPos] = useState(0);
@@ -13,6 +16,7 @@ function Navbar() {
   const location = useLocation();
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
+  const { getTotalItems } = useBasket();
 
   const isHomePage = location.pathname === '/';
 
@@ -88,6 +92,32 @@ function Navbar() {
                 )}
               </li>
             ))}
+
+            <li className="nav-item">
+              <IconButton
+                color="inherit"
+                onClick={() => navigate('/basket')}
+                sx={{ ml: 2 }}
+              >
+                <Badge 
+                  badgeContent={getTotalItems()} 
+                  color="error"
+                  sx={{
+                    '& .MuiBadge-badge': {
+                      backgroundColor: getTotalItems() > 0 ? '#e67e22' : 'inherit',
+                      color: 'white'
+                    }
+                  }}
+                >
+                  <ShoppingBasketIcon 
+                    sx={{ 
+                      color: getTotalItems() > 0 ? '#e67e22' : 'white',
+                      fontSize: '1.5rem'
+                    }} 
+                  />
+                </Badge>
+              </IconButton>
+            </li>
 
             {user ? (
               <li className="nav-item">

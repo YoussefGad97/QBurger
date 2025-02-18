@@ -1,0 +1,113 @@
+.basket-page {
+  min-height: 100vh;
+  padding-top: 100px;
+  background: url("../assets/images/GalleryBack2.jpg") no-repeat center center fixed;
+  background-size: cover;
+
+  .basket-container {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    max-width: 800px;
+    margin: 0 auto;
+
+    .basket-title {
+      color: #e67e22;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+    .basket-items {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+
+      .basket-item {
+        display: flex;
+        align-items: center;
+        padding: 1rem;
+        position: relative;
+
+        .item-image {
+          width: 100px;
+          height: 100px;
+          object-fit: cover;
+          border-radius: 8px;
+        }
+
+        .item-details {
+          flex: 1;
+          padding: 0 1rem;
+
+          .MuiTypography-h6 {
+            color: #e67e22;
+          }
+        }
+
+        .remove-button {
+          color: #e74c3c;
+          &:hover {
+            background-color: rgba(231, 76, 60, 0.1);
+          }
+        }
+      }
+    }
+
+    .basket-divider {
+      margin: 2rem 0;
+    }
+
+    .basket-summary {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+
+      .MuiTypography-h5 {
+        color: #e67e22;
+      }
+
+      .basket-actions {
+        display: flex;
+        gap: 1rem;
+
+        .clear-basket {
+          color: #e74c3c;
+          border-color: #e74c3c;
+          &:hover {
+            background-color: rgba(231, 76, 60, 0.1);
+            border-color: #c0392b;
+          }
+        }
+
+        .checkout {
+          background-color: #e67e22;
+          color: white;
+          &:hover {
+            background-color: #d35400;
+          }
+        }
+      }
+    }
+  }
+
+  &.empty {
+    .basket-container {
+      text-align: center;
+
+      .empty-message {
+        color: #666;
+        margin-bottom: 2rem;
+      }
+
+      .continue-shopping {
+        background-color: #e67e22;
+        color: white;
+        &:hover {
+          background-color: #d35400;
+        }
+      }
+    }
+  }
+} 
