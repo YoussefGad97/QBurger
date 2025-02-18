@@ -1,0 +1,67 @@
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: url("../assets/images/GalleryBack.jpg") no-repeat center center
+    fixed;
+  background-size: cover;
+  padding: 2rem;
+
+  .auth-container {
+    background: rgb(255, 255, 255);
+    padding: 3rem;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 600px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    margin: auto;
+
+    .auth-title {
+      color: #e67e22;
+      text-align: center;
+      margin-bottom: 2rem;
+      font-size: 2.2rem;
+    }
+
+    .auth-input {
+      margin: 1rem 0;
+    }
+
+    .auth-button {
+      margin-top: 2rem !important;
+      padding: 12px 0 !important;
+      font-size: 1.1rem !important;
+      background: #e67e22 !important;
+      color: white !important;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background: #d35400 !important;
+        transform: translateY(-2px);
+      }
+    }
+
+    .auth-link {
+      text-align: center;
+      margin-top: 1.5rem;
+      color: #666;
+
+      a {
+        color: #d35400;
+        text-decoration: none;
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+
+    .error-message {
+      color: #e74c3c;
+      text-align: center;
+      margin: 0.5rem 0;
+    }
+  }
+}
+
+// Add any login-specific styles below
