@@ -47,17 +47,19 @@ const ingredientsList = [
 ];
 
 const MakeYourBurger = () => {
-  const defaultIndices = [
+  const initialIndices = [
     0, // TopBun for box 1
     ingredientsList.findIndex(ingredient => ingredient.name === "Bacon"), // Bacon for box 2
     ingredientsList.findIndex(ingredient => ingredient.name === "Cheese"), // Cheese for box 3
     ingredientsList.findIndex(ingredient => ingredient.name === "Beef"), // Burger for box 4
     ingredientsList.findIndex(ingredient => ingredient.name === "Lettuce"), // Lettuce for box 5
     ingredientsList.findIndex(ingredient => ingredient.name === "Tomato"), // Tomato for box 6
-    ingredientsList.length - 1 // BotBun for box 7
+    ingredientsList.findIndex(ingredient => ingredient.name === "Pickles"), // Pickles for box 7
+    ingredientsList.findIndex(ingredient => ingredient.name === "Onion"), // Onion for box 8
+    ingredientsList.length - 1 // BotBun for box 9
   ];
 
-  const [currentIndices, setCurrentIndices] = useState(defaultIndices);
+  const [currentIndices, setCurrentIndices] = useState([...initialIndices]);
   const [isDragging, setIsDragging] = useState(false);
   const [draggedIndex, setDraggedIndex] = useState(null);
   const burgerControlsRef = useRef(null);
@@ -106,11 +108,11 @@ const MakeYourBurger = () => {
   const handleAddIngredient = (ingredient) => {
     setCurrentIndices((prevIndices) => {
       const newIndices = [...prevIndices];
-      let firstNullIndex = newIndices.findIndex(i => i === null);
-      if (firstNullIndex === -1) {
-        firstNullIndex = 1;
+      let lastNullIndex = newIndices.findLastIndex(i => i === null);
+      if (lastNullIndex === -1) {
+        return newIndices;
       }
-      newIndices[firstNullIndex] = ingredientsList.findIndex(item => item.name === ingredient.name);
+      newIndices[lastNullIndex] = ingredientsList.findIndex(item => item.name === ingredient.name);
       return newIndices;
     });
   };
@@ -140,7 +142,7 @@ const MakeYourBurger = () => {
   };
 
   const handleResetBurger = () => {
-    setCurrentIndices([...defaultIndices]);
+    setCurrentIndices([...initialIndices]);
   };
 
   return (
