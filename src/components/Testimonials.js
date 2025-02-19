@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import '../styles/Testimonials.scss';
 import { IconButton } from '@mui/material';
 import { ArrowBackIos, ArrowForwardIos } from '@mui/icons-material';
@@ -56,35 +56,79 @@ const allTestimonials = [
 
 const Testimonials = () => {
   const [startIndex, setStartIndex] = useState(0);
+  const [transitioning, setTransitioning] = useState(false);
+  const testimonialsGrid = useRef(null);
+
   const visibleTestimonials = allTestimonials.slice(startIndex, startIndex + 3);
 
   const handlePrev = () => {
-    setStartIndex(prev => Math.max(0, prev - 3));
+    if (transitioning) return;
+
+    setTransitioning(true);
+    const firstCard = testimonialsGrid.current.firstChild;
+    firstCard.classList.add('fade-out');
+
+    setTimeout(() => {
+      setStartIndex(prev => (prev === 0 ? allTestimonials.length - 3 : prev - 1));
+      firstCard.classList.remove('fade-out');
+      firstCard.classList.add('fade-in');
+      setTimeout(() => {
+        firstCard.classList.remove('fade-in');
+        setTransitioning(false);
+      }, 300);
+    }, 300);
   };
 
   const handleNext = () => {
-    setStartIndex(prev => Math.min(allTestimonials.length - 3, prev + 3));
+    if (transitioning) return;
+
+    setTransitioning(true);
+    const lastCard = testimonialsGrid.current.lastChild;
+    lastCard.classList.add('fade-out');
+
+    setTimeout(() => {
+      setStartIndex(prev => (prev === allTestimonials.length - 3 ? 0 : prev + 1));
+      lastCard.classList.remove('fade-out');
+      lastCard.classList.add('fade-in');
+      setTimeout(() => {
+        lastCard.classList.remove('fade-in');
+        setTransitioning(false);
+      }, 300);
+    }, 300);
   };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (testimonialsGrid.current) {
+        const cards = testimonialsGrid.current.children;
+        if (cards.length > 0) {
+          cards[0].classList.remove('fade-in');
+          cards[cards.length - 1].classList.remove('fade-in');
+        }
+      }
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [visibleTestimonials]);
 
   return (
     <section id="testimonials" className="testimonials-section">
       <div className="testimonials-container">
         <h2>What Our Customers Say</h2>
         <div className="testimonials-carousel">
-          <IconButton 
-            onClick={handlePrev} 
-            disabled={startIndex === 0} 
+          <IconButton
+            onClick={handlePrev}
             className="carousel-button carousel-button-prev"
           >
             <ArrowBackIos />
           </IconButton>
-          <div className="testimonials-grid">
+          <div className="testimonials-grid" ref={testimonialsGrid}>
             {visibleTestimonials.map((testimonial) => (
               <div key={testimonial.id} className="testimonial-card">
                 <div className="testimonial-header">
-                  <img 
-                    src={testimonial.image} 
-                    alt={testimonial.name} 
+                  <img
+                    src={testimonial.image}
+                    alt={testimonial.name}
                     className="testimonial-image"
                   />
                   <div className="testimonial-info">
@@ -102,9 +146,8 @@ const Testimonials = () => {
               </div>
             ))}
           </div>
-          <IconButton 
-            onClick={handleNext} 
-            disabled={startIndex >= allTestimonials.length - 3}
+          <IconButton
+            onClick={handleNext}
             className="carousel-button carousel-button-next"
           >
             <ArrowForwardIos />
