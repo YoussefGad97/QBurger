@@ -52,16 +52,6 @@ const BurgerGallery = () => {
       image: Burger2,
     },
     {
-      id: 4,
-      name: "World End Burger",
-      description: "Mozzarella Sticks , Beef Bacon , Cheddar Cheese , Lettuce , Onion , Tomato , Pickles , Mayonnaise , Thousand Island Sauce",
-      price: {
-        single: 120,
-        double: 150,
-      },
-      image: Burger4,
-    },
-    {
       id: 5,
       name: "Chicken Zinger",
       description: "Fresh jalapeños with pepper jack cheese",
@@ -90,16 +80,6 @@ const BurgerGallery = () => {
         double: 150,
       },
       image: Burger7,
-    },
-    {
-      id: 8,
-      name: "World End Chicken",
-      description: "Everything you could want on a burger",
-      price: {
-        single: 170,
-        double: 200,
-      },
-      image: Burger8,
     },
   ];
 
@@ -139,7 +119,7 @@ const BurgerGallery = () => {
                   {burger.description}
                 </Typography>
                 <Typography variant="h6" className="burger-price">
-                  Starting at ${burger.price.single}
+                  Starting at {burger.price.single} L.E
                 </Typography>
                 <Button 
                   variant="contained" 

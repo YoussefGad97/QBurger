@@ -96,7 +96,7 @@ const OrderDialog = ({ open, onClose, burger, onOrderComplete }) => {
               <Box className="patty-option">
                 <Typography variant="subtitle1">Single Patty</Typography>
                 <Typography variant="body2">
-                  ${getPrice(burger?.price?.single).toFixed(2)}
+                  {getPrice(burger?.price?.single).toFixed(2)} L.E
                 </Typography>
               </Box>
             }
@@ -108,7 +108,7 @@ const OrderDialog = ({ open, onClose, burger, onOrderComplete }) => {
               <Box className="patty-option">
                 <Typography variant="subtitle1">Double Patty</Typography>
                 <Typography variant="body2">
-                  ${getPrice(burger?.price?.double).toFixed(2)}
+                  {getPrice(burger?.price?.double).toFixed(2)} L.E
                 </Typography>
               </Box>
             }
