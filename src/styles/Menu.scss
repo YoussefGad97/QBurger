@@ -210,23 +210,3 @@
   }
 }
 
-.menu-button-container {
-  display: flex;
-  justify-content: center;
-  margin-top: 2rem;
-
-  .menu-button {
-    font-size: 1.2rem;
-    padding: 0.8rem 2rem;
-    background-color: #f87810;
-    color: white;
-    border-radius: 4px;
-    text-transform: uppercase;
-    transition: background-color 0.3s;
-
-    &:hover {
-      background-color: #e66a00;
-    }
-  }
-}
-

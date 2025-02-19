@@ -1,10 +1,17 @@
-import React, { useState } from 'react';
-import { Container, Typography, Grid, Card, CardMedia, CardContent, Button } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
-import OrderDialog from './OrderDialog';
-import { useBasket } from '../contexts/BasketContext';
-import Snackbar from '@mui/material/Snackbar';
-import Alert from '@mui/material/Alert';
+import React, { useState } from "react";
+import {
+  Container,
+  Typography,
+  Grid,
+  Card,
+  CardMedia,
+  CardContent,
+  Button,
+} from "@mui/material";
+import OrderDialog from "./OrderDialog";
+import { useBasket } from "../contexts/BasketContext";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 import "../styles/BurgerGallery.scss";
 import Burger1 from "../assets/Sandimages/ClassicBurger.png";
 import Burger2 from "../assets/Sandimages/MushroomBurger.png";
@@ -15,18 +22,18 @@ import Burger6 from "../assets/Sandimages/ChickenRanch.png";
 import Burger7 from "../assets/Sandimages/ClassicChicken.png";
 import Burger8 from "../assets/Sandimages/WorldEndChicken.png";
 
-const BurgerGallery = ({ title = 'Most Popular Burgers' }) => {
+const BurgerGallery = () => {
   const [selectedBurger, setSelectedBurger] = useState(null);
   const [orderDialogOpen, setOrderDialogOpen] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const { addToBasket } = useBasket();
-  const navigate = useNavigate();
 
   const burgers = [
     {
       id: 1,
       name: "Classic Burger",
-      description: "Cheddar Cheese , Lettuce , Onion , Tomato , Pickles , Mayonnaise , Ketchup",
+      description:
+        "Cheddar Cheese , Lettuce , Onion , Tomato , Pickles , Mayonnaise , Ketchup",
       price: {
         single: 90,
         double: 160,
@@ -36,7 +43,8 @@ const BurgerGallery = ({ title = 'Most Popular Burgers' }) => {
     {
       id: 2,
       name: "Big Tasty",
-      description: "Double Patty , Cheddar Cheese , Lettuce , Onion , Tomato , Pickles , Mayonnaise , Ketchup",
+      description:
+        "Double Patty , Cheddar Cheese , Lettuce , Onion , Tomato , Pickles , Mayonnaise , Ketchup",
       price: {
         single: 140,
         double: 200,
@@ -46,7 +54,8 @@ const BurgerGallery = ({ title = 'Most Popular Burgers' }) => {
     {
       id: 3,
       name: "Mushroom Swiss",
-      description: "Cheddar Cheese , Lettuce , Onion , Tomato , Jalapeno , Mayonnaise , Barbecue , Portobello Mushroom",
+      description:
+        "Cheddar Cheese , Lettuce , Onion , Tomato , Jalapeno , Mayonnaise , Barbecue , Portobello Mushroom",
       price: {
         single: 110,
         double: 140,
@@ -99,9 +108,9 @@ const BurgerGallery = ({ title = 'Most Popular Burgers' }) => {
   return (
     <Container maxWidth={false} className="burger-gallery">
       <Typography variant="h2" className="section-title">
-        {title}
+        Our Menu
       </Typography>
-      
+
       <Grid container spacing={4} className="burger-grid">
         {burgers.map((burger) => (
           <Grid item xs={12} sm={6} md={4} key={burger.id}>
@@ -123,8 +132,8 @@ const BurgerGallery = ({ title = 'Most Popular Burgers' }) => {
                 <Typography variant="h6" className="burger-price">
                   Starting at {burger.price.single} L.E
                 </Typography>
-                <Button 
-                  variant="contained" 
+                <Button
+                  variant="contained"
                   className="order-button"
                   onClick={() => handleOrderClick(burger)}
                 >
@@ -136,16 +145,6 @@ const BurgerGallery = ({ title = 'Most Popular Burgers' }) => {
         ))}
       </Grid>
 
-      <div className="menu-button-container">
-        <Button 
-          variant="contained" 
-          className="menu-button"
-          onClick={() => navigate('/menu')}
-        >
-          Check Out Our Menu
-        </Button>
-      </div>
-
       {selectedBurger && (
         <OrderDialog
           open={orderDialogOpen}
@@ -155,16 +154,16 @@ const BurgerGallery = ({ title = 'Most Popular Burgers' }) => {
         />
       )}
 
-      <Snackbar 
-        open={snackbarOpen} 
-        autoHideDuration={3000} 
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={3000}
         onClose={() => setSnackbarOpen(false)}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
       >
-        <Alert 
-          onClose={() => setSnackbarOpen(false)} 
-          severity="success" 
-          sx={{ width: '100%' }}
+        <Alert
+          onClose={() => setSnackbarOpen(false)}
+          severity="success"
+          sx={{ width: "100%" }}
         >
           Added to basket!
         </Alert>
