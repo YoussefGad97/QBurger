@@ -35,11 +35,19 @@
   }
 }
 
+.testimonials-carousel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
 .testimonials-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 2rem;
   padding: 1rem;
+  transition: transform 0.5s ease-in-out;
 }
 
 .testimonial-card {
@@ -110,6 +118,39 @@
     font-size: 4rem;
     color: rgba(230, 126, 34, 0.1);
     font-family: serif;
+  }
+}
+
+.carousel-button {
+  background-color: #e67e22;
+  border: none;
+  color: white;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+
+  &:hover {
+    background-color: #d35400;
+    transform: scale(1.1);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background-color: #777;
+  }
+
+  & .MuiSvgIcon-root {
+    font-size: 1.5rem;
+    background-color: #e67e22;
+    border-radius: 5rem;
+    padding: 0.5rem;
+    color: white;
   }
 }
 
