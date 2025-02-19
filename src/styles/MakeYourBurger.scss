@@ -121,7 +121,8 @@
   padding: 0.8rem 1.5rem;
   border-radius: 10px;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.1s ease, box-shadow 0.3s ease, color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.1s ease,
+    box-shadow 0.3s ease, color 0.3s ease;
   width: 100%;
   text-align: center;
   font-size: 1.1rem;
@@ -201,7 +202,7 @@
 .burger-image {
   width: 20vw;
   max-width: 200px;
-  height: 90px;
+  height: 75px;
   display: block;
 }
 
@@ -219,10 +220,16 @@
 
 .icon-button {
   color: white;
-  background-color: transparent ;
+  background-color: transparent;
   border: 1px solid transparent;
-  border-radius:5rem;
+  border-radius: 5rem;
   padding: 0.3rem;
+  border: 1px solid orange;
+  border-radius: 10px;
+  
+  &:hover {
+    transform: scale(1.2);
+  }
 }
 
 .remove-button {
@@ -233,9 +240,9 @@
   margin: 0;
 
   .icon-button {
-    color: #e67e22;
-    background-color: transparent;
-    border: none;
+    color: white;
+    border: 1px solid red;
+    background-color: red;
     border-radius: 50%;
     padding: 0.2rem;
     transition: transform 0.3s ease;
@@ -243,5 +250,49 @@
     &:hover {
       transform: scale(1.2);
     }
+  }
+}
+
+@media (max-width: 768px) {
+  .burger-builder {
+    padding: 3rem;
+  }
+
+  .bigboy {
+    flex-direction: column-reverse;
+  }
+
+  .burger-preview {
+    margin-bottom: 2rem;
+    align-items: center;
+    overflow-y: auto;
+    max-height: 250px;
+    padding: 1rem;
+  }
+
+  .burger-image {
+    width: 70vw;
+    max-width: 200px;
+    height: auto;
+  }
+
+  .ingredient-list {
+    max-height: 200px;
+  }
+
+  .burger-controls {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .burger-control-item {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+
+  .reset-button,
+  .order-button {
+    width: 100%;
+    font-size: 1rem;
   }
 }

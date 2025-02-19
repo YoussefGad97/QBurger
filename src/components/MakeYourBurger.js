@@ -51,11 +51,12 @@ const MakeYourBurger = () => {
     0, // TopBun for box 1
     ingredientsList.findIndex(ingredient => ingredient.name === "Bacon"), // Bacon for box 2
     ingredientsList.findIndex(ingredient => ingredient.name === "Cheese"), // Cheese for box 3
-    ingredientsList.findIndex(ingredient => ingredient.name === "Beef"), // Burger for box 4
-    ingredientsList.findIndex(ingredient => ingredient.name === "Lettuce"), // Lettuce for box 5
-    ingredientsList.findIndex(ingredient => ingredient.name === "Tomato"), // Tomato for box 6
     ingredientsList.findIndex(ingredient => ingredient.name === "Pickles"), // Pickles for box 7
     ingredientsList.findIndex(ingredient => ingredient.name === "Onion"), // Onion for box 8
+    ingredientsList.findIndex(ingredient => ingredient.name === "Lettuce"), // Lettuce for box 5
+    ingredientsList.findIndex(ingredient => ingredient.name === "Tomato"), // Tomato for box 6
+    ingredientsList.findIndex(ingredient => ingredient.name === "Beef"), // Burger for box 4
+
     ingredientsList.length - 1 // BotBun for box 9
   ];
 
