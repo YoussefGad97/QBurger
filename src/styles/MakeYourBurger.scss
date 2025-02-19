@@ -224,3 +224,24 @@
   border-radius:5rem;
   padding: 0.3rem;
 }
+
+.remove-button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+
+  .icon-button {
+    color: #e67e22;
+    background-color: transparent;
+    border: none;
+    border-radius: 50%;
+    padding: 0.2rem;
+    transition: transform 0.3s ease;
+
+    &:hover {
+      transform: scale(1.2);
+    }
+  }
+}

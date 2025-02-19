@@ -1,6 +1,6 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useRef } from "react";
 import { Box, Typography, IconButton, Grid } from '@mui/material';
-import { ArrowLeft, ArrowRight } from '@mui/icons-material';
+import { ArrowLeft, ArrowRight, Close } from '@mui/icons-material';
 import "../styles/MakeYourBurger.scss";
 import TopBun1 from "../assets/Ingredients/SesameTop.png";
 import Beef from "../assets/Ingredients/Beef.png";
@@ -46,8 +46,6 @@ const ingredientsList = [
   { name: "Bottom Bun", image: BotBun1, price: 2.00 }
 ];
 
-const getRandomIndex = () => Math.floor(Math.random() * (ingredientsList.length - 2)) + 1;
-
 const MakeYourBurger = () => {
   const defaultIndices = [
     0, // TopBun for box 1
@@ -60,8 +58,40 @@ const MakeYourBurger = () => {
   ];
 
   const [currentIndices, setCurrentIndices] = useState(defaultIndices);
-  const [currentPosition, setCurrentPosition] = useState(1); // Start from index 1 (position 2)
-  const [totalPrice, setTotalPrice] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const [draggedIndex, setDraggedIndex] = useState(null);
+  const burgerControlsRef = useRef(null);
+
+  const handleDragStart = (index) => {
+    setIsDragging(true);
+    setDraggedIndex(index);
+  };
+
+  const handleDragOver = (e, index) => {
+    e.preventDefault();
+    if (draggedIndex === null || draggedIndex === index) return;
+
+    const targetElement = e.target.closest('.burger-control-item');
+    if (!targetElement) return;
+
+    const rect = targetElement.getBoundingClientRect();
+    const mouseY = e.clientY - rect.top;
+    const isMovingDown = mouseY > rect.height / 2;
+
+    if ((isMovingDown && index > draggedIndex) || (!isMovingDown && index < draggedIndex)) {
+      const newIndices = [...currentIndices];
+      const [draggedItem] = newIndices.splice(draggedIndex, 1);
+      newIndices.splice(index, 0, draggedItem);
+
+      setCurrentIndices(newIndices);
+      setDraggedIndex(index);
+    }
+  };
+
+  const handleDragEnd = () => {
+    setIsDragging(false);
+    setDraggedIndex(null);
+  };
 
   const calculateTotal = useMemo(() => {
     return currentIndices
@@ -76,30 +106,27 @@ const MakeYourBurger = () => {
   const handleAddIngredient = (ingredient) => {
     setCurrentIndices((prevIndices) => {
       const newIndices = [...prevIndices];
-      newIndices[currentPosition] = ingredientsList.findIndex(item => item.name === ingredient.name);
+      let firstNullIndex = newIndices.findIndex(i => i === null);
+      if (firstNullIndex === -1) {
+        firstNullIndex = 1;
+      }
+      newIndices[firstNullIndex] = ingredientsList.findIndex(item => item.name === ingredient.name);
       return newIndices;
     });
-
-    setCurrentPosition((prevPosition) => (prevPosition < 6 ? prevPosition + 1 : 1));
   };
 
   const handleRemoveIngredient = (index) => {
     setCurrentIndices((prevIndices) => {
       const newIndices = [...prevIndices];
-      newIndices[index] = null; // Set to null to remove the ingredient
+      newIndices[index] = null;
       return newIndices;
     });
-  };
-
-  const handleResetBurger = () => {
-    setCurrentIndices(defaultIndices);
-    setCurrentPosition(1); // Reset the position tracker
   };
 
   const handlePrevious = (index) => {
     setCurrentIndices((prevIndices) => {
       const newIndices = [...prevIndices];
-      newIndices[index] = (newIndices[index] - 1 + ingredientsList.length) % ingredientsList.length;
+      newIndices[index] = (newIndices[index] === null ? ingredientsList.length - 1 : (newIndices[index] - 1 + ingredientsList.length) % ingredientsList.length);
       return newIndices;
     });
   };
@@ -107,9 +134,13 @@ const MakeYourBurger = () => {
   const handleNext = (index) => {
     setCurrentIndices((prevIndices) => {
       const newIndices = [...prevIndices];
-      newIndices[index] = (newIndices[index] + 1) % ingredientsList.length;
+      newIndices[index] = (newIndices[index] === null ? 0 : (newIndices[index] + 1) % ingredientsList.length);
       return newIndices;
     });
+  };
+
+  const handleResetBurger = () => {
+    setCurrentIndices([...defaultIndices]);
   };
 
   return (
@@ -125,7 +156,6 @@ const MakeYourBurger = () => {
                 <span>{ingredient.name}</span>
                 <span className="price">${ingredient.price.toFixed(2)}</span>
                 <button onClick={() => handleAddIngredient(ingredient)}>+</button>
-                <button onClick={() => handleRemoveIngredient(index)}>x</button>
               </div>
             ))}
           </div>
@@ -142,12 +172,29 @@ const MakeYourBurger = () => {
           </div>
         </Grid>
         <Grid item xs={12} md={8}>
-          <Box className="burger-controls">
-            {currentIndices.map((currentIndex, i) => (
-              <Box key={i} className="burger-control-item">
-                {currentIndex !== null && ingredientsList[currentIndex] && (
+          <Box className="burger-controls" ref={burgerControlsRef}>
+            {currentIndices.map((currentIndex, index) => (
+              <Box
+                key={index}
+                className={`burger-control-item ${currentIndex === null ? 'empty' : ''}`}
+                draggable={currentIndex !== null}
+                onDragStart={(e) => {
+                  if (currentIndex === null) {
+                    e.preventDefault();
+                  } else {
+                    handleDragStart(index);
+                  }
+                }}
+                onDragOver={(e) => handleDragOver(e, index)}
+                onDragEnd={handleDragEnd}
+                style={{
+                  opacity: isDragging && draggedIndex === index ? 0.5 : 1,
+                  cursor: 'grab',
+                }}
+              >
+                {currentIndex !== null && (
                   <>
-                    <IconButton onClick={() => handlePrevious(i)}>
+                    <IconButton onClick={() => handlePrevious(index)} disabled={isDragging}>
                       <ArrowLeft className="icon-button" />
                     </IconButton>
                     <img
@@ -155,8 +202,11 @@ const MakeYourBurger = () => {
                       alt={ingredientsList[currentIndex].name}
                       className="burger-image"
                     />
-                    <IconButton onClick={() => handleNext(i)}>
+                    <IconButton onClick={() => handleNext(index)} disabled={isDragging}>
                       <ArrowRight className="icon-button" />
+                    </IconButton>
+                    <IconButton onClick={() => handleRemoveIngredient(index)} className="remove-button" >
+                      <Close className="icon-button" />
                     </IconButton>
                   </>
                 )}
