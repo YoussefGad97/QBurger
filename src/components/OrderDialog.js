@@ -137,7 +137,7 @@ const OrderDialog = ({ open, onClose, burger, onOrderComplete }) => {
 
         <Box className="price-summary">
           <Typography variant="h6">
-            Total: ${calculatePrice().toFixed(2)}
+            Total: {calculatePrice().toFixed(2)} L.E
           </Typography>
         </Box>
       </DialogContent>

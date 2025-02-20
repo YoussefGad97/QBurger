@@ -46,7 +46,7 @@ function Navbar() {
     { id: 'landing', text: 'Home' },
     { id: 'about', text: 'About' },
     { id: 'special-offers', text: 'Special Offers' },
-    { id: 'most-popular', text: 'Most Popular' },
+    { id: 'menu', text: 'Menu' },
     { id: 'make-your-burger', text: 'Make Your Burger' },
     { id: 'testimonials', text: 'Testimonials' }
   ];
@@ -76,7 +76,11 @@ function Navbar() {
           <ul className="navbar-nav">
             {navItems.map((item) => (
               <li className="nav-item" key={item.id}>
-                {isHomePage ? (
+                {item.text === 'Menu' ? (
+                  <Link className="nav-link" to="/menu">
+                    {item.text}
+                  </Link>
+                ) : isHomePage ? (
                   <ScrollLink
                     className="nav-link"
                     to={item.id}
