@@ -66,7 +66,7 @@ const Basket = () => {
                   {item.pattyType} Patty
                 </Typography>
                 <Typography variant="h6" color="primary">
-                  ${item.price.toFixed(2)}
+                  {item.price.toFixed(2)} L.E
                 </Typography>
               </CardContent>
               <IconButton 
@@ -83,7 +83,7 @@ const Basket = () => {
 
         <Box className="basket-summary">
           <Typography variant="h5">
-            Total: ${calculateTotal().toFixed(2)}
+            Total: {calculateTotal().toFixed(2)} L.E
           </Typography>
           <div className="basket-actions">
             <Button 

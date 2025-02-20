@@ -1,0 +1,313 @@
+.checkout-container {
+  padding: 120px 0 60px;
+  min-height: 100vh;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+
+  &::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('../assets/images/aboutback1.jpg') center/cover no-repeat fixed;
+    filter: brightness(0.15);
+    z-index: -1;
+  }
+  
+  .checkout-paper {
+    padding: 40px;
+    background: linear-gradient(135deg, rgba(26, 26, 26, 0.95), rgba(45, 45, 45, 0.9));
+    color: #fff;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(230, 126, 34, 0.1);
+    min-height: calc(100vh - 180px);
+
+    @media (max-width: 600px) {
+      padding: 24px;
+    }
+
+    // Custom scrollbar
+    &::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: rgba(230, 126, 34, 0.05);
+      border-radius: 4px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: rgba(230, 126, 34, 0.3);
+      border-radius: 4px;
+      border: 2px solid rgba(45, 45, 45, 0.8);
+      transition: all 0.3s ease;
+
+      &:hover {
+        background: rgba(230, 126, 34, 0.5);
+      }
+    }
+  }
+
+  .page-title {
+    color: #e67e22;
+    margin-bottom: 40px;
+    font-weight: 700;
+    text-align: center;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    font-size: 2.5rem;
+
+    @media (max-width: 600px) {
+      font-size: 2rem;
+      margin-bottom: 32px;
+    }
+  }
+
+  .stepper {
+    margin-bottom: 48px;
+    padding: 32px;
+    background: rgba(26, 26, 26, 0.5);
+    border-radius: 16px;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(230, 126, 34, 0.1);
+
+    @media (max-width: 600px) {
+      padding: 20px;
+      margin-bottom: 32px;
+    }
+
+    .MuiStepLabel-label {
+      color: #fff;
+      font-weight: 500;
+      
+      &.Mui-active {
+        color: #e67e22;
+        font-weight: 600;
+      }
+      
+      &.Mui-completed {
+        color: #4caf50;
+      }
+    }
+
+    .MuiStepIcon-root {
+      color: rgba(230, 126, 34, 0.3);
+      font-size: 28px;
+      
+      &.Mui-active {
+        color: #e67e22;
+      }
+      
+      &.Mui-completed {
+        color: #4caf50;
+      }
+    }
+
+    .MuiStepConnector-line {
+      border-color: rgba(230, 126, 34, 0.2);
+    }
+  }
+
+  .checkout-content {
+    padding: 32px;
+    background: rgba(26, 26, 26, 0.3);
+    border-radius: 16px;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(230, 126, 34, 0.1);
+
+    @media (max-width: 600px) {
+      padding: 20px;
+    }
+
+    .form-section {
+      margin-bottom: 40px;
+
+      .MuiFormLabel-root {
+        color: #e67e22;
+        margin-bottom: 16px;
+        font-weight: 500;
+      }
+
+      .MuiTextField-root {
+        margin-bottom: 24px;
+
+        .MuiOutlinedInput-root {
+          background: rgba(255, 255, 255, 0.05);
+          border-radius: 12px;
+          transition: all 0.3s ease;
+
+          &:hover {
+            background: rgba(255, 255, 255, 0.08);
+          }
+
+          input, textarea {
+            color: #fff;
+            font-size: 1rem;
+            padding: 16px;
+
+            &::placeholder {
+              color: rgba(255, 255, 255, 0.3);
+            }
+          }
+
+          fieldset {
+            border-color: rgba(230, 126, 34, 0.3);
+            border-width: 2px;
+          }
+
+          &:hover fieldset {
+            border-color: rgba(230, 126, 34, 0.5);
+          }
+
+          &.Mui-focused {
+            background: rgba(230, 126, 34, 0.05);
+            
+            fieldset {
+              border-color: #e67e22;
+            }
+          }
+        }
+
+        .MuiInputLabel-root {
+          color: #ccc;
+          font-weight: 500;
+
+          &.Mui-focused {
+            color: #e67e22;
+          }
+        }
+      }
+
+      .MuiRadio-root {
+        color: rgba(230, 126, 34, 0.5);
+        
+        &.Mui-checked {
+          color: #e67e22;
+        }
+      }
+
+      .MuiFormControlLabel-label {
+        color: #fff;
+        font-weight: 500;
+      }
+    }
+
+    .button-group {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 40px;
+      padding-top: 32px;
+      border-top: 2px solid rgba(230, 126, 34, 0.2);
+
+      @media (max-width: 600px) {
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .MuiButton-root {
+        padding: 12px 40px;
+        border-radius: 30px;
+        font-weight: 600;
+        text-transform: none;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+        min-width: 160px;
+
+        @media (max-width: 600px) {
+          width: 100%;
+        }
+
+        &:hover {
+          transform: translateY(-2px);
+        }
+      }
+
+      .MuiButton-contained {
+        background-color: #e67e22;
+        color: #1a1a1a;
+        
+        &:hover {
+          background-color: #d35400;
+          box-shadow: 0 4px 20px rgba(230, 126, 34, 0.4);
+        }
+
+        &:disabled {
+          background-color: rgba(230, 126, 34, 0.3);
+          color: rgba(255, 255, 255, 0.3);
+        }
+      }
+
+      .MuiButton-outlined {
+        color: #e67e22;
+        border: 2px solid rgba(230, 126, 34, 0.5);
+        
+        &:hover {
+          background-color: rgba(230, 126, 34, 0.1);
+          border-color: #e67e22;
+        }
+
+        &:disabled {
+          color: rgba(255, 255, 255, 0.3);
+          border-color: rgba(255, 255, 255, 0.1);
+        }
+      }
+    }
+  }
+
+  .order-review {
+    .order-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px;
+      border-bottom: 1px solid rgba(230, 126, 34, 0.1);
+      transition: all 0.3s ease;
+
+      &:hover {
+        background: rgba(230, 126, 34, 0.05);
+      }
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      .MuiTypography-body1 {
+        font-weight: 500;
+      }
+
+      .MuiTypography-body2 {
+        color: #e67e22;
+        font-weight: 600;
+      }
+    }
+
+    .divider {
+      margin: 24px 0;
+      background-color: rgba(230, 126, 34, 0.2);
+    }
+
+    .total-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px;
+      background: rgba(230, 126, 34, 0.1);
+      border-radius: 16px;
+      margin-top: 32px;
+      border: 1px solid rgba(230, 126, 34, 0.2);
+
+      .MuiTypography-root {
+        color: #e67e22;
+        font-weight: 700;
+        font-size: 1.5rem;
+      }
+    }
+  }
+}

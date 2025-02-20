@@ -18,6 +18,7 @@ import Testimonials from './components/Testimonials';
 import Profile from './components/Profile';
 import Basket from './components/Basket';
 import Menu from './components/Menu';
+import Checkout from './pages/Checkout';
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
               <Route path="/profile" element={<Profile />} />
               <Route path="/basket" element={<Basket />} />
               <Route path="/menu" element={<Menu />} />
+              <Route path="/checkout" element={<Checkout />} />
             </Routes>
           </main>
         </Router>

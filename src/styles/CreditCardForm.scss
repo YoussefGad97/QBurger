@@ -1,0 +1,116 @@
+.credit-card-dialog {
+  .MuiDialog-paper {
+    background: linear-gradient(to bottom right, #1a1a1a, #2d2d2d);
+    color: #fff;
+    border-radius: 16px;
+    
+    // Custom scrollbar
+    &::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: rgba(230, 126, 34, 0.05);
+      border-radius: 5px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: rgba(230, 126, 34, 0.3);
+      border-radius: 5px;
+      border: 2px solid #2d2d2d;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background: rgba(230, 126, 34, 0.5);
+      }
+    }
+  }
+
+  .MuiDialogTitle-root {
+    padding: 20px 24px;
+    border-bottom: 2px solid rgba(230, 126, 34, 0.2);
+
+    .MuiTypography-h5 {
+      color: #e67e22;
+      font-weight: 600;
+    }
+  }
+
+  .credit-card-form {
+    padding: 24px 0;
+
+    .MuiTextField-root {
+      .MuiOutlinedInput-root {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 8px;
+
+        input {
+          color: #fff;
+          font-size: 1rem;
+
+          &::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+          }
+        }
+
+        fieldset {
+          border-color: rgba(230, 126, 34, 0.3);
+        }
+
+        &:hover fieldset {
+          border-color: rgba(230, 126, 34, 0.5);
+        }
+
+        &.Mui-focused fieldset {
+          border-color: #e67e22;
+        }
+      }
+
+      .MuiInputLabel-root {
+        color: #ccc;
+
+        &.Mui-focused {
+          color: #e67e22;
+        }
+      }
+    }
+  }
+
+  .MuiDialogActions-root {
+    padding: 16px 24px;
+    border-top: 2px solid rgba(230, 126, 34, 0.2);
+
+    .MuiButton-root {
+      padding: 8px 24px;
+      border-radius: 25px;
+      font-weight: 600;
+      text-transform: none;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+
+      &:hover {
+        transform: translateY(-2px);
+      }
+    }
+
+    .MuiButton-contained {
+      background-color: #e67e22;
+      color: #1a1a1a;
+      
+      &:hover {
+        background-color: #d35400;
+        box-shadow: 0 4px 12px rgba(230, 126, 34, 0.3);
+      }
+    }
+
+    .MuiButton-text {
+      color: #ccc;
+      
+      &:hover {
+        background-color: rgba(230, 126, 34, 0.1);
+        color: #e67e22;
+      }
+    }
+  }
+}
