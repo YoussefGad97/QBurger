@@ -1,0 +1,39 @@
+.menu-container {
+  padding: 20px;
+  margin-top: 64px; // Adjust this value based on your navbar height
+  background-color: #121212; // Dark background color for the page
+  height: calc(100vh - 64px); // Full height minus navbar height
+  overflow-y: auto; // Allow scrolling if content overflows
+
+  .menu-items {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; // Space between menu items
+
+    .menu-item {
+      background-color: #1e1e1e; // Darker background for menu items
+      border-radius: 8px;
+      padding: 15px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); // Slightly darker shadow
+
+      h6 {
+        color: #ffffff; // White text color for item names
+        margin-bottom: 5px;
+      }
+
+      body2 {
+        color: #aaaaaa; // Lighter text color for descriptions
+        margin-bottom: 5px;
+      }
+
+      body1 {
+        color: #ffffff; // White text color for prices
+        font-weight: bold; // Bold price
+      }
+
+      button {
+        margin-top: 10px; // Space above the button
+      }
+    }
+  }
+} 
