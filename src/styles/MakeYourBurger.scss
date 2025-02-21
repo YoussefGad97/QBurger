@@ -1,7 +1,7 @@
 .burger-builder {
   max-width: 100%;
   margin: 0 auto;
-  padding: 5rem;
+  padding: 2rem;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -10,6 +10,16 @@
   background: url("../assets/images/Make3.png") no-repeat center center;
   background-size: cover;
   background-position: center;
+
+  .burger-title {
+    color: #e67e22;
+    font-weight: 700;
+    text-transform: uppercase;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    margin-bottom: 2rem;
+    letter-spacing: 1px;
+    font-size:1.5rem;
+  }
 }
 
 .bigboy {
@@ -20,53 +30,81 @@
 }
 
 .ingredient-list {
-  max-height: 300px;
+  max-height: 400px;
   overflow-y: auto;
   margin: 1rem 0;
-  padding-right: 0.5rem;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 12px;
+  border: 1px solid rgba(230, 126, 34, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
 
   &::-webkit-scrollbar {
-    width: 6px;
+    width: 8px;
   }
 
   &::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
   }
 
   &::-webkit-scrollbar-thumb {
     background: #e67e22;
-    border-radius: 3px;
+    border-radius: 4px;
+    
+    &:hover {
+      background: darken(#e67e22, 10%);
+    }
   }
 
   .ingredient-item {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0.75rem;
-    margin-bottom: 0.5rem;
+    padding: 1rem;
+    margin-bottom: 0.75rem;
     background: rgba(255, 255, 255, 0.05);
-    border-radius: 6px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
     transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
 
     &:hover {
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(230, 126, 34, 0.1);
+      border-color: rgba(230, 126, 34, 0.3);
+      transform: translateX(5px);
+    }
+
+    &:last-child {
+      margin-bottom: 0;
     }
 
     span {
       color: #fff;
+      font-size: 1.1rem;
+      font-weight: 500;
+
+      &:first-child {
+        flex: 1;
+      }
 
       &.price {
         color: #e67e22;
-        font-weight: 500;
-        margin: 0 1rem;
+        font-weight: 600;
+        margin: 0 1.5rem;
+        font-family: 'Courier New', monospace;
+        background: rgba(230, 126, 34, 0.1);
+        padding: 0.3rem 0.8rem;
+        border-radius: 20px;
+        min-width: 70px;
+        text-align: center;
       }
     }
 
     button {
-      width: 30px;
-      height: 30px;
-      border-radius: 6px;
+      width: 35px;
+      height: 35px;
+      border-radius: 8px;
       border: none;
       background: #2d2d2d;
       color: #fff;
@@ -75,12 +113,19 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.2rem;
+      font-size: 1.4rem;
+      font-weight: 600;
       padding: 0;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 
       &:hover {
         background: #e67e22;
         transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(230, 126, 34, 0.3);
+      }
+
+      &:active {
+        transform: translateY(0);
       }
 
       &.main-ingredient {
@@ -105,6 +150,8 @@
   font-weight: 600;
 }
 
+
+
 .error-message {
   background-color: rgba(220, 53, 69, 0.1);
   color: #dc3545;
@@ -122,9 +169,16 @@
 }
 
 @keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-5px); }
-  75% { transform: translateX(5px); }
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
 }
 
 .burger-controls {
@@ -323,7 +377,7 @@
   padding: 0.3rem;
   border: 1px solid orange;
   border-radius: 10px;
-  
+
   &:hover {
     transform: scale(1.2);
   }
