@@ -5,8 +5,32 @@ import '../styles/Checkout.scss';
 
 const Checkout = () => {
   const navigate = useNavigate();
-  const { basketItems, clearBasket } = useBasket();
-  const [currentStep, setCurrentStep] = useState(1);
+  const { basketItems, clearBasket, getTotalPrice } = useBasket();
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [orderDetails, setOrderDetails] = useState(null);
+  const [checkoutStep, setCheckoutStep] = useState(() => {
+    // Try to get saved checkout step
+    const savedStep = localStorage.getItem('checkout_step');
+    return savedStep ? parseInt(savedStep, 10) : 1;
+  });
+
+  // Save checkout step when it changes
+  useEffect(() => {
+    localStorage.setItem('checkout_step', checkoutStep.toString());
+  }, [checkoutStep]);
+
+  // Redirect if basket is empty and not in success state
+  useEffect(() => {
+    const savedOrderDetails = localStorage.getItem('last_order_details');
+    if (savedOrderDetails) {
+      setOrderDetails(JSON.parse(savedOrderDetails));
+      setShowSuccess(true);
+    } else if (basketItems.length === 0 && !showSuccess) {
+      navigate('/basket');
+    }
+  }, [basketItems, navigate, showSuccess]);
+
+  const [currentStep, setCurrentStep] = useState(checkoutStep);
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -33,14 +57,7 @@ const Checkout = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-  const [orderDetails, setOrderDetails] = useState(null);
   const [isEmailSent, setIsEmailSent] = useState(false);
-
-  useEffect(() => {
-    if (basketItems.length === 0) {
-      navigate('/basket');
-    }
-  }, [basketItems, navigate]);
 
   const calculateTotal = () => {
     return basketItems.reduce((total, item) => total + item.price, 0);
@@ -174,31 +191,37 @@ const Checkout = () => {
     navigate('/');
   };
 
+  const handlePlaceOrder = async () => {
+    const order = {
+      id: 'ORD-' + Date.now(),
+      date: new Date().toISOString(),
+      items: basketItems,
+      total: calculateTotal(),
+      deliveryFee: 30
+    };
+
+    setOrderDetails(order);
+    localStorage.setItem('last_order_details', JSON.stringify(order));
+    setShowSuccess(true);
+    clearBasket();
+  };
+
+  const handleBackToHome = () => {
+    // Clear checkout state
+    localStorage.removeItem('checkout_step');
+    localStorage.removeItem('last_order_details');
+    setShowSuccess(false);
+    setOrderDetails(null);
+    navigate('/');
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
 
     setIsSubmitting(true);
     try {
-      const orderId = Math.random().toString(36).substr(2, 9).toUpperCase();
-      const orderDate = new Date().toISOString();
-      
-      const orderData = {
-        orderId,
-        orderDate,
-        items: basketItems,
-        deliveryDetails: formData,
-        paymentMethod: formData.paymentMethod,
-        total: calculateTotal(),
-        subtotal: calculateSubtotal(),
-        deliveryFee: 30
-      };
-
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      setOrderDetails(orderData);
-      setShowSuccessMessage(true);
+      await handlePlaceOrder();
       setIsSubmitting(false);
     } catch (error) {
       setIsSubmitting(false);
@@ -457,7 +480,7 @@ const Checkout = () => {
           </div>
         </div>
 
-        {showSuccessMessage && orderDetails && (
+        {showSuccess && orderDetails && (
           <div className="success-overlay">
             <div className="success-modal">
               <div className="success-header">
@@ -470,8 +493,8 @@ const Checkout = () => {
                 <div className="receipt-header">
                   <h3>Order Receipt</h3>
                   <div className="order-info">
-                    <p><strong>Order ID:</strong> {orderDetails.orderId}</p>
-                    <p><strong>Date:</strong> {formatDate(orderDetails.orderDate)}</p>
+                    <p><strong>Order ID:</strong> {orderDetails.id}</p>
+                    <p><strong>Date:</strong> {formatDate(orderDetails.date)}</p>
                   </div>
                 </div>
 
@@ -491,25 +514,25 @@ const Checkout = () => {
                 <div className="receipt-summary">
                   <div className="summary-row">
                     <span>Subtotal</span>
-                    <span>{formatCurrency(orderDetails.subtotal)}</span>
+                    <span>{formatCurrency(calculateSubtotal())}</span>
                   </div>
                   <div className="summary-row">
                     <span>Delivery Fee</span>
-                    <span>{formatCurrency(orderDetails.deliveryFee)}</span>
+                    <span>{formatCurrency(30)}</span>
                   </div>
                   <div className="summary-row total">
                     <span>Total</span>
-                    <span>{formatCurrency(orderDetails.total)}</span>
+                    <span>{formatCurrency(calculateTotal())}</span>
                   </div>
                 </div>
 
                 <div className="delivery-details">
                   <h4>Delivery Details</h4>
-                  <p><strong>Name:</strong> {orderDetails.deliveryDetails.fullName}</p>
-                  <p><strong>Address:</strong> {orderDetails.deliveryDetails.address}</p>
-                  <p><strong>City:</strong> {orderDetails.deliveryDetails.city}</p>
-                  <p><strong>Phone:</strong> {orderDetails.deliveryDetails.phone}</p>
-                  <p><strong>Payment Method:</strong> {orderDetails.paymentMethod === 'credit-card' ? 'Credit Card' : 'Cash on Delivery'}</p>
+                  <p><strong>Name:</strong> {formData.fullName}</p>
+                  <p><strong>Address:</strong> {formData.address}</p>
+                  <p><strong>City:</strong> {formData.city}</p>
+                  <p><strong>Phone:</strong> {formData.phone}</p>
+                  <p><strong>Payment Method:</strong> {formData.paymentMethod === 'credit-card' ? 'Credit Card' : 'Cash on Delivery'}</p>
                 </div>
               </div>
 
@@ -531,7 +554,7 @@ const Checkout = () => {
                     </>
                   )}
                 </button>
-                <button className="close-button" onClick={handleCloseAndNavigate}>
+                <button className="close-button" onClick={handleBackToHome}>
                   <i className="fas fa-home"></i>
                   Return to Home
                 </button>
