@@ -1,6 +1,6 @@
 import React from 'react';
 import { Typography, Box, Button } from '@mui/material';
-import './Menu.scss';
+import '../styles/Menu.scss';
 
 const Menu = () => {
   // Sample data for menu items

@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useBasket } from '../contexts/BasketContext';
+import { useAuth } from '../contexts/AuthContext';
 import '../styles/Checkout.scss';
 
 const Checkout = () => {
   const navigate = useNavigate();
   const { basketItems, clearBasket, getTotalPrice } = useBasket();
+  const { user } = useAuth();
   const [showSuccess, setShowSuccess] = useState(false);
   const [orderDetails, setOrderDetails] = useState(null);
   const [checkoutStep, setCheckoutStep] = useState(() => {
@@ -32,16 +34,16 @@ const Checkout = () => {
 
   const [currentStep, setCurrentStep] = useState(checkoutStep);
   const [formData, setFormData] = useState({
-    fullName: '',
-    email: '',
-    phone: '',
-    address: '',
+    fullName: user?.username || '',
+    email: user?.email || '',
+    phone: user?.phone || '',
+    address: user?.[user?.defaultAddress] || '',
     city: '',
     paymentMethod: '',
-    cardNumber: '',
-    cardExpiry: '',
+    cardNumber: user?.cards?.[0]?.maskedNumber || '',
+    cardExpiry: user?.cards?.[0]?.expiry || '',
     cardCVC: '',
-    cardName: ''
+    cardName: user?.cards?.[0]?.name || ''
   });
   const [paymentMethod, setPaymentMethod] = useState('cash');
   const [errors, setErrors] = useState({
