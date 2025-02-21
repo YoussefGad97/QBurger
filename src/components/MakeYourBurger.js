@@ -1,6 +1,8 @@
 import React, { useState, useMemo, useRef } from "react";
 import { Box, Typography, IconButton, Grid } from '@mui/material';
 import { ArrowLeft, ArrowRight, Close } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
+import { useBasket } from '../contexts/BasketContext';
 import "../styles/MakeYourBurger.scss";
 import TopBun1 from "../assets/Ingredients/SesameTop.png";
 import Beef from "../assets/Ingredients/Beef.png";
@@ -47,6 +49,8 @@ const ingredientsList = [
 ];
 
 const MakeYourBurger = () => {
+  const navigate = useNavigate();
+  const { addToBasket } = useBasket();
   const initialIndices = [
     0, // TopBun for box 1
     ingredientsList.findIndex(ingredient => ingredient.name === "Bacon"), // Bacon for box 2
@@ -64,6 +68,8 @@ const MakeYourBurger = () => {
   const [isDragging, setIsDragging] = useState(false);
   const [draggedIndex, setDraggedIndex] = useState(null);
   const burgerControlsRef = useRef(null);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleDragStart = (index) => {
     setIsDragging(true);
@@ -102,8 +108,89 @@ const MakeYourBurger = () => {
       .reduce((sum, index) => sum + (ingredientsList[index]?.price || 0), 0);
   }, [currentIndices]);
 
+  const generateCustomBurgerName = (ingredients) => {
+    const mainIngredients = ingredients.filter(ingredient => 
+      ingredient && ['Beef', 'Chicken'].includes(ingredient.name)
+    );
+    const extras = ingredients.filter(ingredient => 
+      ingredient && !['Top Bun', 'Bottom Bun', 'Beef', 'Chicken'].includes(ingredient.name)
+    );
+
+    let name = 'Custom ';
+    if (mainIngredients.length > 0) {
+      name += mainIngredients[0].name;
+    } else {
+      name += 'Veggie';
+    }
+    
+    if (extras.length > 0) {
+      const significantExtras = extras.slice(0, 2);
+      name += ' with ' + significantExtras.map(i => i.name).join(' & ');
+      if (extras.length > 2) {
+        name += ' & more';
+      }
+    }
+    
+    return name + ' Burger';
+  };
+
+  const validateBurger = (ingredients) => {
+    // Check if burger has both buns
+    const hasTopBun = ingredients.some(i => i && i.name === 'Top Bun');
+    const hasBottomBun = ingredients.some(i => i && i.name === 'Bottom Bun');
+    
+    if (!hasTopBun || !hasBottomBun) {
+      setErrorMessage('Your burger needs both buns!');
+      return false;
+    }
+
+    // Check if burger has at least one main ingredient
+    const hasMainIngredient = ingredients.some(i => 
+      i && (i.name === 'Beef' || i.name === 'Chicken')
+    );
+
+    if (!hasMainIngredient) {
+      setErrorMessage('Add at least one main ingredient (Beef or Chicken)');
+      return false;
+    }
+
+    setErrorMessage('');
+    return true;
+  };
+
   const handleOrderNow = () => {
-    alert(`Order placed! Total: $${calculateTotal.toFixed(2)}`);
+    const selectedIngredients = currentIndices
+      .filter(index => index !== null)
+      .map(index => ingredientsList[index]);
+
+    if (!validateBurger(selectedIngredients)) {
+      return;
+    }
+
+    const customBurger = {
+      id: 'custom-' + Date.now(),
+      name: generateCustomBurgerName(selectedIngredients),
+      price: calculateTotal,
+      image: null,
+      ingredients: selectedIngredients,
+      quantity: 1,
+      isCustom: true
+    };
+
+    addToBasket(customBurger);
+    setShowSuccess(true);
+    
+    // Reset error message if exists
+    setErrorMessage('');
+    
+    // Hide success message after 2 seconds
+    setTimeout(() => {
+      setShowSuccess(false);
+    }, 2000);
+  };
+
+  const handleCheckout = () => {
+    navigate('/checkout');
   };
 
   const handleAddIngredient = (ingredient) => {
@@ -158,21 +245,55 @@ const MakeYourBurger = () => {
               <div key={index} className="ingredient-item">
                 <span>{ingredient.name}</span>
                 <span className="price">${ingredient.price.toFixed(2)}</span>
-                <button onClick={() => handleAddIngredient(ingredient)}>+</button>
+                <button 
+                  onClick={() => handleAddIngredient(ingredient)}
+                  className={
+                    (ingredient.name === 'Beef' || ingredient.name === 'Chicken') 
+                    ? 'main-ingredient' 
+                    : ''
+                  }
+                >
+                  +
+                </button>
               </div>
             ))}
           </div>
           <div className="total-price">
             Total: ${calculateTotal.toFixed(2)}
           </div>
+          {errorMessage && (
+            <div className="error-message">
+              <i className="fas fa-exclamation-circle"></i>
+              {errorMessage}
+            </div>
+          )}
           <div className="button-group">
             <button className="reset-button" onClick={handleResetBurger}>
+              <i className="fas fa-undo"></i>
               Reset Burger
             </button>
-            <button className="order-button" onClick={handleOrderNow}>
-              Order Now
+            <button 
+              className="order-button" 
+              onClick={handleOrderNow}
+              disabled={currentIndices.every(index => index === null)}
+            >
+              <i className="fas fa-shopping-basket"></i>
+              Add to Basket
+            </button>
+            <button 
+              className="checkout-button" 
+              onClick={handleCheckout}
+            >
+              <i className="fas fa-arrow-right"></i>
+              Go to Checkout
             </button>
           </div>
+          {showSuccess && (
+            <div className="success-message">
+              <i className="fas fa-check-circle"></i>
+              Burger added to basket!
+            </div>
+          )}
         </Grid>
         <Grid item xs={12} md={8}>
           <Box className="burger-controls" ref={burgerControlsRef}>
