@@ -1,46 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Container,
-  Typography,
-  Box,
-  TextField,
-  Button,
-  Grid,
-  Divider,
-  Paper,
-  Radio,
-  RadioGroup,
-  FormControlLabel,
-  FormControl,
-  FormLabel,
-  Stepper,
-  Step,
-  StepLabel,
-  Alert,
-  Snackbar,
-} from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useBasket } from '../contexts/BasketContext';
-import CreditCardForm from '../components/CreditCardForm';
 import '../styles/Checkout.scss';
 
 const Checkout = () => {
   const navigate = useNavigate();
   const { basketItems, clearBasket } = useBasket();
-  const [activeStep, setActiveStep] = useState(0);
-  const [paymentMethod, setPaymentMethod] = useState('cash');
-  const [showCardForm, setShowCardForm] = useState(false);
-  const [cardDetails, setCardDetails] = useState(null);
-  const [errors, setErrors] = useState({});
-  const [showError, setShowError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
     fullName: '',
+    email: '',
     phone: '',
     address: '',
     city: '',
     notes: ''
   });
+  const [paymentMethod, setPaymentMethod] = useState('cash');
+  const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
   useEffect(() => {
     if (basketItems.length === 0) {
@@ -54,21 +32,29 @@ const Checkout = () => {
 
   const validateForm = () => {
     const newErrors = {};
-    
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phoneRegex = /^01[0125][0-9]{8}$/;
+
     if (!formData.fullName.trim()) {
       newErrors.fullName = 'Full name is required';
     }
-    
+
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email is required';
+    } else if (!emailRegex.test(formData.email)) {
+      newErrors.email = 'Please enter a valid email address';
+    }
+
     if (!formData.phone.trim()) {
       newErrors.phone = 'Phone number is required';
-    } else if (!/^[0-9]{11}$/.test(formData.phone.trim())) {
-      newErrors.phone = 'Please enter a valid 11-digit phone number';
+    } else if (!phoneRegex.test(formData.phone)) {
+      newErrors.phone = 'Please enter a valid Egyptian phone number';
     }
-    
+
     if (!formData.address.trim()) {
       newErrors.address = 'Delivery address is required';
     }
-    
+
     if (!formData.city.trim()) {
       newErrors.city = 'City is required';
     }
@@ -79,325 +65,264 @@ const Checkout = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    
-    if (name === 'phone') {
-      // Only allow numbers and limit to 11 digits
-      const numericValue = value.replace(/\D/g, '').slice(0, 11);
-      setFormData(prev => ({ ...prev, [name]: numericValue }));
-    } else {
-      setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+    // Clear error when user starts typing
+    if (errors[name]) {
+      setErrors(prev => ({
+        ...prev,
+        [name]: ''
+      }));
     }
   };
 
-  const handleNext = () => {
-    if (activeStep === 0) {
-      const isValid = validateForm();
-      if (!isValid) {
-        setShowError(true);
-        setErrorMessage('Please fill in all required fields correctly');
-        return;
-      }
-    }
-
-    if (activeStep === 1 && paymentMethod === 'card' && !cardDetails) {
-      setShowCardForm(true);
-      return;
-    }
-    setActiveStep(prev => prev + 1);
-  };
-
-  const handleBack = () => {
-    setActiveStep(prev => prev - 1);
-  };
-
-  const handlePaymentMethodChange = (e) => {
-    const method = e.target.value;
+  const handlePaymentMethodChange = (method) => {
     setPaymentMethod(method);
-    if (method === 'card' && !cardDetails) {
-      setShowCardForm(true);
-    }
   };
 
-  const handleCardFormSubmit = (cardData) => {
-    setCardDetails(cardData);
-    setShowCardForm(false);
-    handleNext();
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validateForm()) {
-      setShowError(true);
-      setErrorMessage('Please check your delivery details');
-      return;
-    }
+    if (!validateForm()) return;
 
+    setIsSubmitting(true);
     try {
-      // Here you would typically send the order to your backend
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1500));
+
       const orderData = {
         items: basketItems,
         deliveryDetails: formData,
         paymentMethod,
-        cardDetails: paymentMethod === 'card' ? cardDetails : null,
-        total: calculateTotal()
+        total: calculateTotal(),
+        orderId: Math.random().toString(36).substr(2, 9).toUpperCase(),
+        orderDate: new Date().toISOString()
       };
+
       console.log('Order submitted:', orderData);
-      
+      setShowSuccessMessage(true);
       clearBasket();
-      navigate('/orders', { 
-        state: { 
-          orderSuccess: true,
-          orderId: Math.random().toString(36).substr(2, 9).toUpperCase()
-        }
-      });
+      
+      // Redirect to orders page after showing success message
+      setTimeout(() => {
+        navigate('/orders', { 
+          state: { 
+            orderSuccess: true,
+            orderId: orderData.orderId
+          }
+        });
+      }, 2000);
+
     } catch (error) {
-      setShowError(true);
-      setErrorMessage('Failed to submit order. Please try again.');
+      console.error('Order submission error:', error);
+      setErrors(prev => ({
+        ...prev,
+        submit: 'Failed to submit order. Please try again.'
+      }));
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
-  const DeliveryForm = () => (
-    <Box className="form-section">
-      <Typography variant="h6" gutterBottom>
-        Delivery Details
-      </Typography>
-      <Grid container spacing={3}>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            required
-            fullWidth
-            label="Full Name"
-            name="fullName"
-            value={formData.fullName}
-            onChange={handleInputChange}
-            error={!!errors.fullName}
-            helperText={errors.fullName}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            required
-            fullWidth
-            label="Phone Number"
-            name="phone"
-            value={formData.phone}
-            onChange={handleInputChange}
-            error={!!errors.phone}
-            helperText={errors.phone || 'Enter 11-digit phone number'}
-            placeholder="01234567890"
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
-            required
-            fullWidth
-            label="Delivery Address"
-            name="address"
-            value={formData.address}
-            onChange={handleInputChange}
-            multiline
-            rows={2}
-            error={!!errors.address}
-            helperText={errors.address}
-            placeholder="Enter your full delivery address"
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            required
-            fullWidth
-            label="City"
-            name="city"
-            value={formData.city}
-            onChange={handleInputChange}
-            error={!!errors.city}
-            helperText={errors.city}
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
-            fullWidth
-            label="Additional Notes"
-            name="notes"
-            value={formData.notes}
-            onChange={handleInputChange}
-            multiline
-            rows={2}
-            placeholder="Special instructions for delivery (optional)"
-          />
-        </Grid>
-      </Grid>
-    </Box>
+  const renderDeliveryForm = () => (
+    <div className="delivery-form">
+      <h3>Delivery Details</h3>
+      <div className="form-group">
+        <label htmlFor="fullName">Full Name</label>
+        <input
+          type="text"
+          id="fullName"
+          name="fullName"
+          value={formData.fullName}
+          onChange={handleInputChange}
+          className={errors.fullName ? 'error' : ''}
+          placeholder="Enter your full name"
+        />
+        {errors.fullName && <span className="error-message">{errors.fullName}</span>}
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          value={formData.email}
+          onChange={handleInputChange}
+          className={errors.email ? 'error' : ''}
+          placeholder="Enter your email address"
+        />
+        {errors.email && <span className="error-message">{errors.email}</span>}
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="phone">Phone Number</label>
+        <input
+          type="tel"
+          id="phone"
+          name="phone"
+          value={formData.phone}
+          onChange={handleInputChange}
+          className={errors.phone ? 'error' : ''}
+          placeholder="Enter your phone number (e.g., 01012345678)"
+        />
+        {errors.phone && <span className="error-message">{errors.phone}</span>}
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="address">Delivery Address</label>
+        <textarea
+          id="address"
+          name="address"
+          value={formData.address}
+          onChange={handleInputChange}
+          className={errors.address ? 'error' : ''}
+          placeholder="Enter your full delivery address"
+          rows="3"
+        />
+        {errors.address && <span className="error-message">{errors.address}</span>}
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="city">City</label>
+        <input
+          type="text"
+          id="city"
+          name="city"
+          value={formData.city}
+          onChange={handleInputChange}
+          className={errors.city ? 'error' : ''}
+          placeholder="Enter your city"
+        />
+        {errors.city && <span className="error-message">{errors.city}</span>}
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="notes">Additional Notes (Optional)</label>
+        <textarea
+          id="notes"
+          name="notes"
+          value={formData.notes}
+          onChange={handleInputChange}
+          placeholder="Any special instructions for delivery?"
+          rows="2"
+        />
+      </div>
+    </div>
   );
 
-  const PaymentSection = () => (
-    <Box className="form-section">
-      <Typography variant="h6" gutterBottom>
-        Payment Method
-      </Typography>
-      <FormControl component="fieldset">
-        <RadioGroup
-          value={paymentMethod}
-          onChange={handlePaymentMethodChange}
+  const renderPaymentMethod = () => (
+    <div className="payment-method">
+      <h3>Payment Method</h3>
+      <div className="payment-options">
+        <div
+          className={`payment-option ${paymentMethod === 'cash' ? 'selected' : ''}`}
+          onClick={() => handlePaymentMethodChange('cash')}
         >
-          <FormControlLabel
-            value="cash"
-            control={<Radio />}
-            label={
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                <span>Cash on Delivery</span>
-                <Typography variant="body2" color="textSecondary">
-                  (Pay when you receive your order)
-                </Typography>
-              </Box>
-            }
-          />
-          <FormControlLabel
-            value="card"
-            control={<Radio />}
-            label={
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                <span>Credit Card</span>
-                {cardDetails && (
-                  <Typography variant="body2" color="primary">
-                    (Card ending in {cardDetails.cardNumber.slice(-4)})
-                  </Typography>
-                )}
-              </Box>
-            }
-          />
-        </RadioGroup>
-      </FormControl>
-    </Box>
+          <i className="fas fa-money-bill-wave"></i>
+          <span>Cash on Delivery</span>
+          <p>Pay when you receive your order</p>
+        </div>
+        <div
+          className={`payment-option ${paymentMethod === 'card' ? 'selected' : ''}`}
+          onClick={() => handlePaymentMethodChange('card')}
+        >
+          <i className="fas fa-credit-card"></i>
+          <span>Credit Card</span>
+          <p>Coming soon!</p>
+        </div>
+      </div>
+    </div>
   );
 
-  const OrderReview = () => (
-    <Box className="order-review">
-      <Typography variant="h6" gutterBottom>
-        Order Summary
-      </Typography>
-      <Box className="review-section">
-        <Typography variant="subtitle1" gutterBottom>
-          Delivery Details
-        </Typography>
-        <Box sx={{ mb: 3 }}>
-          <Typography variant="body1">{formData.fullName}</Typography>
-          <Typography variant="body2" color="textSecondary">{formData.phone}</Typography>
-          <Typography variant="body2" color="textSecondary">{formData.address}</Typography>
-          <Typography variant="body2" color="textSecondary">{formData.city}</Typography>
-          {formData.notes && (
-            <Typography variant="body2" color="textSecondary" sx={{ mt: 1 }}>
-              Notes: {formData.notes}
-            </Typography>
-          )}
-        </Box>
-
-        <Typography variant="subtitle1" gutterBottom>
-          Items ({basketItems.length})
-        </Typography>
-        {basketItems.map((item) => (
-          <Box key={item.id} className="order-item">
-            <Typography variant="body1">
-              {item.name} ({item.pattyType})
-            </Typography>
-            <Typography variant="body2">
-              {item.price.toFixed(2)} L.E
-            </Typography>
-          </Box>
+  const renderOrderSummary = () => (
+    <div className="order-summary">
+      <h3>Order Summary</h3>
+      <div className="items-list">
+        {basketItems.map((item, index) => (
+          <div key={index} className="order-item">
+            <div className="item-info">
+              <h4>{item.name}</h4>
+              <p>{item.pattyType}</p>
+            </div>
+            <span className="item-price">{item.price.toFixed(2)} L.E</span>
+          </div>
         ))}
-      </Box>
-      <Divider className="divider" />
-      <Box className="total-section">
-        <Typography variant="h6">Total Amount</Typography>
-        <Typography variant="h6">
-          {calculateTotal().toFixed(2)} L.E
-        </Typography>
-      </Box>
-    </Box>
+      </div>
+      <div className="total">
+        <span>Total Amount</span>
+        <span>{calculateTotal().toFixed(2)} L.E</span>
+      </div>
+    </div>
   );
-
-  const getStepContent = (step) => {
-    switch (step) {
-      case 0:
-        return <DeliveryForm />;
-      case 1:
-        return <PaymentSection />;
-      case 2:
-        return <OrderReview />;
-      default:
-        return 'Unknown step';
-    }
-  };
 
   return (
-    <Container className="checkout-container">
-      <Paper className="checkout-paper">
-        <Typography variant="h4" className="page-title">
-          Checkout
-        </Typography>
+    <div className="checkout-container">
+      <div className="checkout-content">
+        <h2>Checkout</h2>
         
-        <Stepper activeStep={activeStep} className="stepper">
-          {['Delivery Details', 'Payment Method', 'Order Review'].map((label) => (
-            <Step key={label}>
-              <StepLabel>{label}</StepLabel>
-            </Step>
-          ))}
-        </Stepper>
+        <div className="checkout-steps">
+          <div className={`step ${currentStep >= 1 ? 'active' : ''}`}>
+            <span className="step-number">1</span>
+            <span className="step-text">Delivery</span>
+          </div>
+          <div className={`step ${currentStep >= 2 ? 'active' : ''}`}>
+            <span className="step-number">2</span>
+            <span className="step-text">Payment</span>
+          </div>
+          <div className={`step ${currentStep >= 3 ? 'active' : ''}`}>
+            <span className="step-number">3</span>
+            <span className="step-text">Review</span>
+          </div>
+        </div>
 
-        <Box className="checkout-content">
-          {getStepContent(activeStep)}
+        <div className="checkout-grid">
+          <div className="checkout-main">
+            <form onSubmit={handleSubmit}>
+              {renderDeliveryForm()}
+              {renderPaymentMethod()}
+              
+              <div className="form-actions">
+                <button 
+                  type="submit" 
+                  className="submit-button"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? (
+                    <>
+                      <span className="spinner"></span>
+                      Processing...
+                    </>
+                  ) : (
+                    'Place Order'
+                  )}
+                </button>
+              </div>
+            </form>
+          </div>
           
-          <Box className="button-group">
-            <Button
-              variant="outlined"
-              onClick={handleBack}
-              disabled={activeStep === 0}
-            >
-              Back
-            </Button>
-            {activeStep === 2 ? (
-              <Button
-                variant="contained"
-                onClick={handleSubmit}
-                className="submit-button"
-              >
-                Place Order
-              </Button>
-            ) : (
-              <Button
-                variant="contained"
-                onClick={handleNext}
-                className="next-button"
-              >
-                Next
-              </Button>
-            )}
-          </Box>
-        </Box>
-      </Paper>
+          <div className="checkout-sidebar">
+            {renderOrderSummary()}
+          </div>
+        </div>
 
-      <CreditCardForm
-        open={showCardForm}
-        onClose={() => setShowCardForm(false)}
-        onSubmit={handleCardFormSubmit}
-      />
+        {showSuccessMessage && (
+          <div className="success-message">
+            <i className="fas fa-check-circle"></i>
+            <h3>Order Placed Successfully!</h3>
+            <p>Redirecting to orders page...</p>
+          </div>
+        )}
 
-      <Snackbar
-        open={showError}
-        autoHideDuration={6000}
-        onClose={() => setShowError(false)}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-      >
-        <Alert 
-          onClose={() => setShowError(false)} 
-          severity="error" 
-          variant="filled"
-          sx={{ width: '100%' }}
-        >
-          {errorMessage}
-        </Alert>
-      </Snackbar>
-    </Container>
+        {errors.submit && (
+          <div className="error-message global">
+            <i className="fas fa-exclamation-circle"></i>
+            {errors.submit}
+          </div>
+        )}
+      </div>
+    </div>
   );
 };
 
