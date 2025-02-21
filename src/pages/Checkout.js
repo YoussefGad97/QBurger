@@ -13,10 +13,24 @@ const Checkout = () => {
     phone: '',
     address: '',
     city: '',
-    notes: ''
+    paymentMethod: '',
+    cardNumber: '',
+    cardExpiry: '',
+    cardCVC: '',
+    cardName: ''
   });
   const [paymentMethod, setPaymentMethod] = useState('cash');
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState({
+    fullName: '',
+    email: '',
+    phone: '',
+    address: '',
+    city: '',
+    cardNumber: '',
+    cardExpiry: '',
+    cardCVC: '',
+    cardName: ''
+  });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
@@ -32,31 +46,51 @@ const Checkout = () => {
 
   const validateForm = () => {
     const newErrors = {};
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const phoneRegex = /^01[0125][0-9]{8}$/;
-
+    
     if (!formData.fullName.trim()) {
       newErrors.fullName = 'Full name is required';
     }
-
     if (!formData.email.trim()) {
       newErrors.email = 'Email is required';
-    } else if (!emailRegex.test(formData.email)) {
-      newErrors.email = 'Please enter a valid email address';
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = 'Invalid email format';
     }
-
     if (!formData.phone.trim()) {
       newErrors.phone = 'Phone number is required';
-    } else if (!phoneRegex.test(formData.phone)) {
-      newErrors.phone = 'Please enter a valid Egyptian phone number';
     }
-
     if (!formData.address.trim()) {
-      newErrors.address = 'Delivery address is required';
+      newErrors.address = 'Address is required';
     }
-
     if (!formData.city.trim()) {
       newErrors.city = 'City is required';
+    }
+    if (!formData.paymentMethod) {
+      newErrors.paymentMethod = 'Please select a payment method';
+    }
+
+    // Validate credit card fields if credit card is selected
+    if (formData.paymentMethod === 'credit-card') {
+      if (!formData.cardNumber.trim()) {
+        newErrors.cardNumber = 'Card number is required';
+      } else if (!/^\d{16}$/.test(formData.cardNumber.replace(/\s/g, ''))) {
+        newErrors.cardNumber = 'Invalid card number';
+      }
+      
+      if (!formData.cardExpiry.trim()) {
+        newErrors.cardExpiry = 'Expiry date is required';
+      } else if (!/^(0[1-9]|1[0-2])\/([0-9]{2})$/.test(formData.cardExpiry)) {
+        newErrors.cardExpiry = 'Invalid expiry date (MM/YY)';
+      }
+      
+      if (!formData.cardCVC.trim()) {
+        newErrors.cardCVC = 'CVC is required';
+      } else if (!/^\d{3,4}$/.test(formData.cardCVC)) {
+        newErrors.cardCVC = 'Invalid CVC';
+      }
+      
+      if (!formData.cardName.trim()) {
+        newErrors.cardName = 'Name on card is required';
+      }
     }
 
     setErrors(newErrors);
@@ -65,10 +99,29 @@ const Checkout = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    let formattedValue = value;
+
+    // Format card number with spaces
+    if (name === 'cardNumber') {
+      formattedValue = value.replace(/\s/g, '').match(/.{1,4}/g)?.join(' ') || '';
+    }
+    // Format expiry date
+    else if (name === 'cardExpiry') {
+      formattedValue = value
+        .replace(/\D/g, '')
+        .replace(/^(\d{2})/, '$1/')
+        .substr(0, 5);
+    }
+    // Format CVC
+    else if (name === 'cardCVC') {
+      formattedValue = value.replace(/\D/g, '').substr(0, 4);
+    }
+
     setFormData(prev => ({
       ...prev,
-      [name]: value
+      [name]: formattedValue
     }));
+    
     // Clear error when user starts typing
     if (errors[name]) {
       setErrors(prev => ({
@@ -94,7 +147,7 @@ const Checkout = () => {
       const orderData = {
         items: basketItems,
         deliveryDetails: formData,
-        paymentMethod,
+        paymentMethod: formData.paymentMethod,
         total: calculateTotal(),
         orderId: Math.random().toString(36).substr(2, 9).toUpperCase(),
         orderDate: new Date().toISOString()
@@ -216,23 +269,89 @@ const Checkout = () => {
     <div className="payment-method">
       <h3>Payment Method</h3>
       <div className="payment-options">
-        <div
-          className={`payment-option ${paymentMethod === 'cash' ? 'selected' : ''}`}
-          onClick={() => handlePaymentMethodChange('cash')}
+        <div 
+          className={`payment-option ${formData.paymentMethod === 'cash' ? 'selected' : ''}`}
+          onClick={() => handleInputChange({ target: { name: 'paymentMethod', value: 'cash' } })}
         >
           <i className="fas fa-money-bill-wave"></i>
           <span>Cash on Delivery</span>
-          <p>Pay when you receive your order</p>
+          <p>Pay when your order arrives</p>
         </div>
-        <div
-          className={`payment-option ${paymentMethod === 'card' ? 'selected' : ''}`}
-          onClick={() => handlePaymentMethodChange('card')}
+        <div 
+          className={`payment-option ${formData.paymentMethod === 'credit-card' ? 'selected' : ''}`}
+          onClick={() => handleInputChange({ target: { name: 'paymentMethod', value: 'credit-card' } })}
         >
           <i className="fas fa-credit-card"></i>
           <span>Credit Card</span>
-          <p>Coming soon!</p>
+          <p>Pay securely with your card</p>
         </div>
       </div>
+      {errors.paymentMethod && <span className="error-message">{errors.paymentMethod}</span>}
+      
+      {formData.paymentMethod === 'credit-card' && (
+        <div className="credit-card-form">
+          <div className="form-group">
+            <label htmlFor="cardNumber">Card Number</label>
+            <input
+              type="text"
+              id="cardNumber"
+              name="cardNumber"
+              value={formData.cardNumber}
+              onChange={handleInputChange}
+              placeholder="1234 5678 9012 3456"
+              maxLength="19"
+              className={errors.cardNumber ? 'error' : ''}
+            />
+            {errors.cardNumber && <span className="error-message">{errors.cardNumber}</span>}
+          </div>
+          
+          <div className="form-row">
+            <div className="form-group">
+              <label htmlFor="cardExpiry">Expiry Date</label>
+              <input
+                type="text"
+                id="cardExpiry"
+                name="cardExpiry"
+                value={formData.cardExpiry}
+                onChange={handleInputChange}
+                placeholder="MM/YY"
+                maxLength="5"
+                className={errors.cardExpiry ? 'error' : ''}
+              />
+              {errors.cardExpiry && <span className="error-message">{errors.cardExpiry}</span>}
+            </div>
+            
+            <div className="form-group">
+              <label htmlFor="cardCVC">CVC</label>
+              <input
+                type="text"
+                id="cardCVC"
+                name="cardCVC"
+                value={formData.cardCVC}
+                onChange={handleInputChange}
+                placeholder="123"
+                maxLength="4"
+                className={errors.cardCVC ? 'error' : ''}
+              />
+              {errors.cardCVC && <span className="error-message">{errors.cardCVC}</span>}
+            </div>
+          </div>
+          
+          <div className="form-group">
+            <label htmlFor="cardName">Name on Card</label>
+            <input
+              type="text"
+              id="cardName"
+              name="cardName"
+              value={formData.cardName}
+              onChange={handleInputChange}
+              placeholder="John Doe"
+              className={errors.cardName ? 'error' : ''}
+            />
+            {errors.cardName && <span className="error-message">{errors.cardName}</span>}
+          </div>
+        </div>
+      )}
     </div>
   );
 

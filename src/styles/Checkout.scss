@@ -196,6 +196,76 @@
               }
             }
           }
+
+          .credit-card-form {
+            margin-top: 2rem;
+            padding: 2rem;
+            background: rgba(45, 45, 45, 0.5);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+
+            .form-row {
+              display: grid;
+              grid-template-columns: 1fr 1fr;
+              gap: 1rem;
+
+              @media (max-width: 576px) {
+                grid-template-columns: 1fr;
+              }
+            }
+
+            .form-group {
+              margin-bottom: 1.5rem;
+
+              &:last-child {
+                margin-bottom: 0;
+              }
+
+              label {
+                display: block;
+                color: #fff;
+                margin-bottom: 0.5rem;
+                font-weight: 500;
+              }
+
+              input {
+                width: 100%;
+                padding: 0.75rem 1rem;
+                background: #2d2d2d;
+                border: 1px solid #3d3d3d;
+                border-radius: 6px;
+                color: #fff;
+                font-size: 1rem;
+                transition: all 0.3s ease;
+                font-family: 'Courier New', monospace;
+
+                &::placeholder {
+                  color: #666;
+                  font-family: inherit;
+                }
+
+                &:focus {
+                  outline: none;
+                  border-color: #e67e22;
+                  box-shadow: 0 0 0 2px rgba(230, 126, 34, 0.2);
+                }
+
+                &.error {
+                  border-color: #dc3545;
+                  &:focus {
+                    box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.2);
+                  }
+                }
+              }
+
+              .error-message {
+                color: #dc3545;
+                font-size: 0.875rem;
+                margin-top: 0.5rem;
+                display: block;
+              }
+            }
+          }
         }
 
         .form-actions {
