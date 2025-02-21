@@ -33,6 +33,8 @@ const Checkout = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [orderDetails, setOrderDetails] = useState(null);
+  const [isEmailSent, setIsEmailSent] = useState(false);
 
   useEffect(() => {
     if (basketItems.length === 0) {
@@ -42,6 +44,10 @@ const Checkout = () => {
 
   const calculateTotal = () => {
     return basketItems.reduce((total, item) => total + item.price, 0);
+  };
+
+  const calculateSubtotal = () => {
+    return basketItems.reduce((total, item) => total + item.price * item.quantity, 0);
   };
 
   const validateForm = () => {
@@ -135,46 +141,71 @@ const Checkout = () => {
     setPaymentMethod(method);
   };
 
+  const formatDate = (date) => {
+    return new Intl.DateTimeFormat('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    }).format(new Date(date));
+  };
+
+  const formatCurrency = (amount) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'EGP'
+    }).format(amount);
+  };
+
+  const handleEmailReceipt = async () => {
+    try {
+      setIsEmailSent(true);
+      // In a real application, you would make an API call here to send the email
+      // For now, we'll just simulate the success
+      await new Promise(resolve => setTimeout(resolve, 1000));
+    } catch (error) {
+      console.error('Failed to send email:', error);
+    }
+  };
+
+  const handleCloseAndNavigate = () => {
+    clearBasket();
+    navigate('/');
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
 
     setIsSubmitting(true);
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
-
+      const orderId = Math.random().toString(36).substr(2, 9).toUpperCase();
+      const orderDate = new Date().toISOString();
+      
       const orderData = {
+        orderId,
+        orderDate,
         items: basketItems,
         deliveryDetails: formData,
         paymentMethod: formData.paymentMethod,
         total: calculateTotal(),
-        orderId: Math.random().toString(36).substr(2, 9).toUpperCase(),
-        orderDate: new Date().toISOString()
+        subtotal: calculateSubtotal(),
+        deliveryFee: 30
       };
 
-      console.log('Order submitted:', orderData);
-      setShowSuccessMessage(true);
-      clearBasket();
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1500));
       
-      // Redirect to orders page after showing success message
-      setTimeout(() => {
-        navigate('/orders', { 
-          state: { 
-            orderSuccess: true,
-            orderId: orderData.orderId
-          }
-        });
-      }, 2000);
-
+      setOrderDetails(orderData);
+      setShowSuccessMessage(true);
+      setIsSubmitting(false);
     } catch (error) {
-      console.error('Order submission error:', error);
+      setIsSubmitting(false);
       setErrors(prev => ({
         ...prev,
         submit: 'Failed to submit order. Please try again.'
       }));
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -426,11 +457,86 @@ const Checkout = () => {
           </div>
         </div>
 
-        {showSuccessMessage && (
-          <div className="success-message">
-            <i className="fas fa-check-circle"></i>
-            <h3>Order Placed Successfully!</h3>
-            <p>Redirecting to orders page...</p>
+        {showSuccessMessage && orderDetails && (
+          <div className="success-overlay">
+            <div className="success-modal">
+              <div className="success-header">
+                <i className="fas fa-check-circle"></i>
+                <h2>Thank You for Your Order!</h2>
+                <p>Your order has been successfully placed</p>
+              </div>
+
+              <div className="order-receipt">
+                <div className="receipt-header">
+                  <h3>Order Receipt</h3>
+                  <div className="order-info">
+                    <p><strong>Order ID:</strong> {orderDetails.orderId}</p>
+                    <p><strong>Date:</strong> {formatDate(orderDetails.orderDate)}</p>
+                  </div>
+                </div>
+
+                <div className="receipt-items">
+                  <h4>Order Items</h4>
+                  {orderDetails.items.map((item, index) => (
+                    <div key={index} className="receipt-item">
+                      <div className="item-details">
+                        <span className="item-name">{item.name}</span>
+                        <span className="item-quantity">x{item.quantity}</span>
+                      </div>
+                      <span className="item-price">{formatCurrency(item.price * item.quantity)}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="receipt-summary">
+                  <div className="summary-row">
+                    <span>Subtotal</span>
+                    <span>{formatCurrency(orderDetails.subtotal)}</span>
+                  </div>
+                  <div className="summary-row">
+                    <span>Delivery Fee</span>
+                    <span>{formatCurrency(orderDetails.deliveryFee)}</span>
+                  </div>
+                  <div className="summary-row total">
+                    <span>Total</span>
+                    <span>{formatCurrency(orderDetails.total)}</span>
+                  </div>
+                </div>
+
+                <div className="delivery-details">
+                  <h4>Delivery Details</h4>
+                  <p><strong>Name:</strong> {orderDetails.deliveryDetails.fullName}</p>
+                  <p><strong>Address:</strong> {orderDetails.deliveryDetails.address}</p>
+                  <p><strong>City:</strong> {orderDetails.deliveryDetails.city}</p>
+                  <p><strong>Phone:</strong> {orderDetails.deliveryDetails.phone}</p>
+                  <p><strong>Payment Method:</strong> {orderDetails.paymentMethod === 'credit-card' ? 'Credit Card' : 'Cash on Delivery'}</p>
+                </div>
+              </div>
+
+              <div className="success-actions">
+                <button 
+                  className={`email-button ${isEmailSent ? 'sent' : ''}`} 
+                  onClick={handleEmailReceipt}
+                  disabled={isEmailSent}
+                >
+                  {isEmailSent ? (
+                    <>
+                      <i className="fas fa-check"></i>
+                      Email Sent!
+                    </>
+                  ) : (
+                    <>
+                      <i className="fas fa-envelope"></i>
+                      Email Receipt
+                    </>
+                  )}
+                </button>
+                <button className="close-button" onClick={handleCloseAndNavigate}>
+                  <i className="fas fa-home"></i>
+                  Return to Home
+                </button>
+              </div>
+            </div>
           </div>
         )}
 
