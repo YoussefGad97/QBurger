@@ -77,9 +77,36 @@
   .navbar-toggler {
     color: white;
     border-color: rgba(255, 255, 255, 0.1);
+    transition: transform 0.3s ease;
+    margin-left: 10px;
 
     &:focus {
       box-shadow: 0 0 0 2px rgba(248, 120, 16, 0.5);
+    }
+
+    .navbar-toggler-icon {
+      transition: transform 0.3s ease;
+    }
+
+    &[aria-expanded="true"] {
+      .navbar-toggler-icon {
+        transform: rotate(180deg);
+      }
+    }
+  }
+
+  .navbar-collapse {
+    display: block !important;
+    height: auto;
+    
+    &.collapse {
+      height: 0;
+      overflow: hidden;
+      transition: height 0.3s ease;
+    }
+
+    &.show {
+      height: auto;
     }
   }
 
@@ -125,6 +152,11 @@
 @media (max-width: 992px) {
   .custom-navbar {
     background-color: rgba(0, 0, 0, 0.9);
+    padding: 0.75rem 1rem;
+
+    .navbar-brand {
+      margin-right: auto;
+    }
 
     .navbar-nav {
       margin-right: 0;
@@ -132,11 +164,38 @@
 
       .nav-link {
         margin: 0.5rem 0;
+        padding: 0.5rem 1rem;
+        text-align: center;
+      }
+
+      li:has(.basket-icon) {
+        display: none;
+      }
+    }
+
+    .mobile-controls {
+      display: flex;
+      align-items: center;
+      margin-left: auto;
+
+      .basket-icon {
+        margin: 0;
+      }
+    }
+
+    .navbar-collapse {
+      &.collapse {
+        height: 0 !important;
+      }
+
+      &.show {
+        height: auto !important;
       }
     }
 
     .user-dropdown {
       margin: 1rem 0;
+      justify-content: center;
       
       .MuiMenu-paper {
         width: 100%;
@@ -145,5 +204,3 @@
     }
   }
 }
-
-

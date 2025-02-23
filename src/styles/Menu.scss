@@ -1,39 +1,84 @@
 .menu-container {
   padding: 20px;
-  margin-top: 64px; // Adjust this value based on your navbar height
-  background: url("../assets/images/ProfilePageBack.jpg") no-repeat center; // Updated background image
-  background-size: cover; // Ensure the image covers the entire area
-  height: calc(100vh - 64px); // Full height minus navbar height
-  overflow-y: auto; // Allow scrolling if content overflows
+  margin-top: 64px;
+  background: url("../assets/images/ProfilePageBack.jpg") no-repeat center;
+  background-size: cover;
+  height: calc(100vh - 64px);
+  overflow-y: auto;
+
+  @media (max-width: 768px) {
+    padding: 15px;
+    margin-top: 56px; // Smaller margin for mobile
+    height: calc(100vh - 56px);
+  }
 
   .menu-items {
     display: flex;
     flex-direction: column;
-    gap: 20px; // Space between menu items
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+
+    @media (max-width: 768px) {
+      gap: 15px;
+    }
 
     .menu-item {
-      background-color: #1e1e1e; // Darker background for menu items
+      background-color: #1e1e1e;
       border-radius: 8px;
       padding: 15px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); // Slightly darker shadow
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
 
-      h6 {
-        color: #ffffff; // White text color for item names
-        margin-bottom: 5px;
+      @media (max-width: 768px) {
+        flex-direction: column;
+        padding: 12px;
+        text-align: center;
       }
 
-      body2 {
-        color: #aaaaaa; // Lighter text color for descriptions
-        margin-bottom: 5px;
-      }
+      .item-info {
+        flex: 1;
 
-      body1 {
-        color: #ffffff; // White text color for prices
-        font-weight: bold; // Bold price
+        h6 {
+          color: #ffffff;
+          margin-bottom: 5px;
+          font-size: 1.1rem;
+
+          @media (max-width: 768px) {
+            font-size: 1rem;
+          }
+        }
+
+        body2 {
+          color: #aaaaaa;
+          margin-bottom: 5px;
+          display: block;
+          font-size: 0.9rem;
+
+          @media (max-width: 768px) {
+            font-size: 0.85rem;
+          }
+        }
+
+        body1 {
+          color: #ffffff;
+          font-weight: bold;
+          display: block;
+          margin-top: 5px;
+        }
       }
 
       button {
-        margin-top: 10px; // Space above the button
+        margin-top: 10px;
+        min-width: 120px;
+
+        @media (max-width: 768px) {
+          width: 100%;
+          margin-top: 15px;
+        }
       }
     }
   }
