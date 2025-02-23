@@ -9,11 +9,9 @@ import "../styles/BurgerGallery.scss";
 import Burger1 from "../assets/Sandimages/ClassicBurger.png";
 import Burger2 from "../assets/Sandimages/MushroomBurger.png";
 import Burger3 from "../assets/Sandimages/BaconBurger.png";
-import Burger4 from "../assets/Sandimages/WorldEnd.png";
 import Burger5 from "../assets/Sandimages/ChickenZinger.png";
 import Burger6 from "../assets/Sandimages/ChickenRanch.png";
 import Burger7 from "../assets/Sandimages/ClassicChicken.png";
-import Burger8 from "../assets/Sandimages/WorldEndChicken.png";
 
 const BurgerGallery = ({ title = 'Most Popular Burgers' }) => {
   const [selectedBurger, setSelectedBurger] = useState(null);
