@@ -5,6 +5,7 @@
   background-size: cover;
   background-position: center top;
   position: relative;
+  overflow-x: hidden; // Prevent horizontal scroll
 
   .section-title {
     text-align: center;
@@ -124,48 +125,137 @@
         &:active {
           transform: translateY(0);
         }
+
+        @media (max-width: 768px) {
+          font-size: 0.95rem;
+          padding: 0.75rem 1.5rem;
+        }
       }
     }
   }
 
   // Updated media queries
   @media (max-width: 1200px) {
+    padding: 6rem 1.5rem;
+
     .gallery-container {
-      grid-template-columns: repeat(2, 1fr); // Two columns for medium screens
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+
+    .burger-card {
+      .burger-content {
+        .burger-title {
+          font-size: 1.3rem;
+        }
+      }
     }
   }
 
   @media (max-width: 768px) {
-    .gallery-container {
-      grid-template-columns: repeat(2, 1fr); // Two columns for mobile
-      gap: 1rem; // Reduce gap for better spacing
+    padding: 4rem 0.5rem;
+
+    .section-title {
+      font-size: 2rem;
+      margin-bottom: 2rem;
+      padding: 0 0.5rem;
     }
 
-    .burger-image {
-      width: 100%;
-      height: 100px;
-      overflow: hidden;
-      border-radius: 8px;
-      margin-bottom: 1rem;
-      position: relative;
-
-      img {
-        max-width: max-content;
-        height: 100%;
-        object-fit: contain;
-        position: relative;
-        z-index: 1;
-      }
+    .gallery-container {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.75rem;
+      padding: 0 0.25rem;
+      margin: 0;
     }
 
     .burger-card {
-      padding: 0.1rem; // Adjust padding for mobile
+      padding: 0.5rem;
+      margin-bottom: 0.5rem;
+
+      .burger-image {
+        height: 150px;
+        margin-bottom: 0.75rem;
+      }
+
+      .burger-content {
+        padding: 0.75rem;
+
+        .burger-title {
+          font-size: 1.1rem;
+          margin-bottom: 0.75rem;
+          text-align: center;
+        }
+
+        .burger-description {
+          font-size: 0.9rem;
+          margin-bottom: 1rem;
+          line-height: 1.4;
+        }
+
+        .burger-price {
+          font-size: 1rem;
+          margin-bottom: 1rem;
+        }
+
+        .order-button {
+          padding: 0.75rem;
+          font-size: 0.9rem;
+          margin-top: 0.75rem;
+          width: 50%;
+          margin-left: auto;
+          margin-right: auto;
+        }
+      }
     }
   }
 
   @media (max-width: 480px) {
+    padding: 3rem 0.5rem;
+
+    .section-title {
+      font-size: 1.75rem;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
     .gallery-container {
-      grid-template-columns: 1fr; // Single column for very small screens
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      padding: 0;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .burger-card {
+      max-width: 300px;
+      width: 90%;
+      margin: 0 0 1rem 0;
+
+      .burger-image {
+        height: 180px;
+      }
+
+      .burger-content {
+        .burger-title {
+          font-size: 1.2rem;
+        }
+
+        .burger-description {
+          font-size: 0.85rem;
+        }
+
+        .burger-price {
+          font-size: 1rem;
+        }
+
+        .order-button {
+          width: 100%;
+          padding: 0.7rem;
+          font-size: 0.85rem;
+        }
+      }
     }
   }
 
@@ -176,6 +266,9 @@
       font-weight: 400;
       color: white;
       font-size: 0.8rem;
+      line-height: 1.5;
+      letter-spacing: 0.00938em;
+
       .css-rizt0-MuiTypography-root {
         margin: 0;
         font-family: "Roboto", "Helvetica", "Arial", sans-serif;
@@ -185,27 +278,19 @@
         line-height: 1.5;
         letter-spacing: 0.00938em;
       }
-      line-height: 1.5;
-      letter-spacing: 0.00938em;
     }
 
     .burger-title {
       color: #f97910;
-      font-size:1rem;
+      font-size: 1rem;
       padding-bottom: 1rem;
       font-weight: bold;
-      text-align: left;
+      text-align: center;
     }
 
     .burger-description {
-      padding:1rem 0rem;
-      text-align: left;
-      
-    }
-
-    .burger-price {
-      padding-bottom: 1rem;
-      text-align: left;
+      padding: 1rem 0;
+      text-align: center;
     }
   }
 }
@@ -227,6 +312,10 @@
     &:hover {
       background-color: #e66a00;
     }
+
+    @media (max-width: 768px) {
+      font-size: 1rem;
+      padding: 0.6rem 1.5rem;
+    }
   }
 }
-
