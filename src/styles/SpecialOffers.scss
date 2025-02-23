@@ -31,24 +31,14 @@
         background-color: #f97910;
         color: white;
         border: none;
-        padding: 0.7rem 1.2rem;
-        font-size: 0.9rem;
-        border-radius: 6px;
+        padding: 1rem 2rem;
+        font-size: 1.1rem;
+        border-radius: 5px;
         cursor: pointer;
-        transition: all 0.3s ease;
-        min-width: 120px;
-        font-weight: 500;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
+        transition: background-color 0.3s ease;
 
         &:hover {
-          background-color: #e06800;
-          transform: translateY(-2px);
-          box-shadow: 0 4px 12px rgba(249, 121, 16, 0.3);
-        }
-
-        &:active {
-          transform: translateY(0);
+          background-color: darken(#f97910, 10%);
         }
       }
     }
@@ -86,9 +76,8 @@
         }
 
         .order-now-btn {
-          padding: 0.6rem 1rem !important;
-          font-size: 0.85rem !important;
-          min-width: 100px;
+          padding: 0.8rem 1.5rem !important;
+          font-size: 1rem !important;
         }
       }
     }

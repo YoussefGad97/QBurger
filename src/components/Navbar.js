@@ -12,7 +12,6 @@ import { useBasket } from '../contexts/BasketContext';
 function Navbar() {
   const [prevScrollPos, setPrevScrollPos] = useState(0);
   const [visible, setVisible] = useState(true);
-  const [isNavCollapsed, setIsNavCollapsed] = useState(true);
   const { user, logout } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
@@ -40,11 +39,6 @@ function Navbar() {
     logout();
     navigate('/login');
     handleMenuClose();
-    setIsNavCollapsed(true);
-  };
-
-  const handleNavClick = () => {
-    setIsNavCollapsed(true);
   };
 
   // Navigation items
@@ -64,58 +58,26 @@ function Navbar() {
   return (
     <nav className={`navbar navbar-expand-lg custom-navbar ${visible ? "visible" : "hidden"}`}>
       <div className="container-fluid">
-        <Link className="navbar-brand" to="/" onClick={handleNavClick}>
+        <Link className="navbar-brand" to="/">
           <img src={Logo} alt="Logo" className="navbar-logo" />
           Q-Burger
         </Link>
 
-        <div className="mobile-controls">
-          <IconButton
-            color="inherit"
-            onClick={() => {
-              navigate('/basket');
-              handleNavClick();
-            }}
-            className="basket-icon"
-            sx={{ ml: 2 }}
-          >
-            <Badge 
-              badgeContent={getTotalItems()} 
-              color="error"
-              sx={{
-                '& .MuiBadge-badge': {
-                  backgroundColor: getTotalItems() > 0 ? '#e67e22' : 'inherit',
-                  color: 'white'
-                }
-              }}
-            >
-              <ShoppingBasketIcon 
-                sx={{ 
-                  color: getTotalItems() > 0 ? '#e67e22' : 'white',
-                  fontSize: '1.5rem'
-                }} 
-              />
-            </Badge>
-          </IconButton>
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span className="navbar-toggler-icon"></span>
+        </button>
 
-          <button
-            className="navbar-toggler"
-            type="button"
-            onClick={() => setIsNavCollapsed(!isNavCollapsed)}
-            aria-controls="navbarNav"
-            aria-expanded={!isNavCollapsed}
-            aria-label="Toggle navigation"
-          >
-            <span className="navbar-toggler-icon"></span>
-          </button>
-        </div>
-
-        <div className={`navbar-collapse justify-content-end ${isNavCollapsed ? 'collapse' : 'show'}`} id="navbarNav">
+        <div className="collapse navbar-collapse justify-content-end" id="navbarNav">
           <ul className="navbar-nav">
             {navItems.map((item) => (
               <li className="nav-item" key={item.id}>
                 {item.text === 'Menu' ? (
-                  <Link className="nav-link" to="/menu" onClick={handleNavClick}>
+                  <Link className="nav-link" to="/menu">
                     {item.text}
                   </Link>
                 ) : isHomePage ? (
@@ -124,12 +86,11 @@ function Navbar() {
                     to={item.id}
                     smooth={true}
                     duration={500}
-                    onClick={handleNavClick}
                   >
                     {item.text}
                   </ScrollLink>
                 ) : (
-                  <Link className="nav-link" to={`/#${item.id}`} onClick={handleNavClick}>
+                  <Link className="nav-link" to={`/#${item.id}`}>
                     {item.text}
                   </Link>
                 )}
@@ -139,11 +100,7 @@ function Navbar() {
             <li className="nav-item">
               <IconButton
                 color="inherit"
-                onClick={() => {
-                  navigate('/basket');
-                  handleNavClick();
-                }}
-                className="basket-icon"
+                onClick={() => navigate('/basket')}
                 sx={{ ml: 2 }}
               >
                 <Badge 
@@ -193,28 +150,20 @@ function Navbar() {
                   anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
                   transformOrigin={{ vertical: 'top', horizontal: 'right' }}
                 >
-                  <MenuItem onClick={() => {
-                    navigate('/profile');
-                    handleMenuClose();
-                    handleNavClick();
-                  }}>Profile</MenuItem>
-                  <MenuItem onClick={() => {
-                    navigate('/orders');
-                    handleMenuClose();
-                    handleNavClick();
-                  }}>Orders</MenuItem>
+                  <MenuItem onClick={() => navigate('/profile')}>Profile</MenuItem>
+                  <MenuItem onClick={() => navigate('/orders')}>Orders</MenuItem>
                   <MenuItem onClick={handleLogout}>Logout</MenuItem>
                 </Menu>
               </li>
             ) : (
               <>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/login" onClick={handleNavClick}>
+                  <Link className="nav-link" to="/login">
                     Login
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/signup" onClick={handleNavClick}>
+                  <Link className="nav-link" to="/signup">
                     Sign Up
                   </Link>
                 </li>
