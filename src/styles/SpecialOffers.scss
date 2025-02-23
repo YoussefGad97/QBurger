@@ -13,11 +13,15 @@
       max-width: 600px;
       padding: 3rem;
       margin-left: 10%;
+      background-color: rgba(0, 0, 0, 0.6);
+      border-radius: 10px;
+      backdrop-filter: blur(5px);
 
       h2 {
         color: #fff;
         font-size: 2.5rem;
         margin-bottom: 1.5rem;
+        font-weight: bold;
       }
 
       p {
@@ -35,10 +39,11 @@
         font-size: 1.1rem;
         border-radius: 5px;
         cursor: pointer;
-        transition: background-color 0.3s ease;
+        transition: all 0.3s ease;
 
         &:hover {
           background-color: darken(#f97910, 10%);
+          transform: translateY(-2px);
         }
       }
     }
@@ -53,39 +58,175 @@
     border-radius: 50%;
     top: 50%;
     transform: translateY(-50%);
+    opacity: 0.8;
+    transition: all 0.3s ease;
+
+    &:hover {
+      opacity: 1;
+      background-color: rgba(0, 0, 0, 0.7);
+    }
+
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+      width: 24px;
+      height: 24px;
+    }
   }
 
-  // Mobile responsiveness
-  @media (max-width: 768px) {
+  // Large tablets and small desktops
+  @media (max-width: 1200px) {
+    .offers-carousel {
+      .carousel-slide {
+        height: 450px;
+      }
+
+      .offer-details {
+        max-width: 500px;
+        padding: 2.5rem;
+        margin-left: 8%;
+
+        h2 {
+          font-size: 2.2rem;
+        }
+
+        p {
+          font-size: 1.15rem;
+        }
+      }
+    }
+  }
+
+  // Tablets
+  @media (max-width: 992px) {
     .offers-carousel {
       .carousel-slide {
         height: 400px;
       }
 
       .offer-details {
-        margin: 0 auto;
-        text-align: center;
-        padding: 1.5rem;
+        max-width: 450px;
+        padding: 2rem;
+        margin-left: 5%;
 
         h2 {
-          font-size: 1.8rem !important;
+          font-size: 2rem;
+          margin-bottom: 1.2rem;
         }
 
         p {
-          font-size: 1rem !important;
+          font-size: 1.1rem;
+          margin-bottom: 1.5rem;
         }
 
         .order-now-btn {
-          padding: 0.8rem 1.5rem !important;
-          font-size: 1rem !important;
+          padding: 0.9rem 1.8rem;
+          font-size: 1.05rem;
         }
       }
     }
 
     .carousel-control-prev,
     .carousel-control-next {
-      width: 40px !important;
-      height: 40px !important;
+      width: 45px;
+      height: 45px;
+
+      .carousel-control-prev-icon,
+      .carousel-control-next-icon {
+        width: 22px;
+        height: 22px;
+      }
+    }
+  }
+
+  // Mobile devices
+  @media (max-width: 768px) {
+    .offers-carousel {
+      .carousel-slide {
+        height: 450px;
+        background-position: center center;
+      }
+
+      .offer-details {
+        margin: 0 auto;
+        text-align: center;
+        padding: 1.5rem;
+        max-width: 90%;
+        background-color: rgba(0, 0, 0, 0.75);
+
+        h2 {
+          font-size: 1.8rem;
+          margin-bottom: 1rem;
+        }
+
+        p {
+          font-size: 1.05rem;
+          line-height: 1.4;
+          margin-bottom: 1.5rem;
+        }
+
+        .order-now-btn {
+          padding: 0.75rem 1.5rem;
+          font-size: 1rem;
+          width: 80%;
+          max-width: 300px;
+        }
+      }
+    }
+
+    .carousel-control-prev,
+    .carousel-control-next {
+      width: 28px;
+      height: 28px;
+      background-color: rgba(0, 0, 0, 0.6);
+      
+      .carousel-control-prev-icon,
+      .carousel-control-next-icon {
+        width: 16px;
+        height: 16px;
+      }
+    }
+  }
+
+  // Small mobile devices
+  @media (max-width: 480px) {
+    .offers-carousel {
+      .carousel-slide {
+        height: 400px;
+      }
+
+      .offer-details {
+        padding: 1.2rem;
+        max-width: 95%;
+
+        h2 {
+          font-size: 1.6rem;
+          margin-bottom: 0.8rem;
+        }
+
+        p {
+          font-size: 0.95rem;
+          line-height: 1.3;
+          margin-bottom: 1.2rem;
+        }
+
+        .order-now-btn {
+          padding: 0.6rem 1.25rem;
+          font-size: 0.9rem;
+          width: 90%;
+        }
+      }
+    }
+
+    .carousel-control-prev,
+    .carousel-control-next {
+      width: 24px;
+      height: 24px;
+      
+      .carousel-control-prev-icon,
+      .carousel-control-next-icon {
+        width: 14px;
+        height: 14px;
+      }
     }
   }
 }
