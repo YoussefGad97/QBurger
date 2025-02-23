@@ -417,44 +417,127 @@
 
 @media (max-width: 768px) {
   .burger-builder {
-    padding: 3rem;
-  }
-
-  .bigboy {
-    flex-direction: column-reverse;
-  }
-
-  .burger-preview {
-    margin-bottom: 2rem;
-    align-items: center;
-    overflow-y: auto;
-    max-height: 250px;
     padding: 1rem;
-  }
+    min-height: auto;
 
-  .burger-image {
-    width: 70vw;
-    max-width: 200px;
-    height: auto;
+    .burger-title {
+      font-size: 1.3rem;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
   }
 
   .ingredient-list {
-    max-height: 200px;
+    max-height: 350px;
+    padding: 0.75rem;
+    width: 100%;
+    margin: 0.75rem 0;
+
+    .ingredient-item {
+      padding: 0.75rem;
+      margin-bottom: 0.5rem;
+
+      span {
+        font-size: 0.95rem;
+
+        &.price {
+          margin: 0 0.75rem;
+          padding: 0.25rem 0.6rem;
+          min-width: 60px;
+          font-size: 0.9rem;
+        }
+      }
+
+      button {
+        width: 30px;
+        height: 30px;
+        font-size: 1.2rem;
+      }
+    }
+  }
+
+  .total-price {
+    font-size: 1.3rem;
+    margin: 1.25rem 0;
+    padding: 0.75rem;
+  }
+
+  .error-message {
+    padding: 0.75rem;
+    font-size: 0.9rem;
+    margin: 0.75rem 0;
+
+    i {
+      font-size: 1.1rem;
+    }
   }
 
   .burger-controls {
+    width: 100%;
+    padding: 0 0.5rem;
+
+    .burger-control-item {
+      width: 100%;
+      margin-bottom: 0.5rem;
+    }
+  }
+
+  .button-group {
+    width: 100%;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+
+    button {
+      padding: 0.6rem 1.2rem;
+      font-size: 0.9rem;
+      min-width: 120px;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .burger-builder {
+    padding: 1rem 0.5rem;
+
+    .burger-title {
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+    }
+  }
+
+  .ingredient-list {
+    max-height: 300px;
+    padding: 0.5rem;
+
+    .ingredient-item {
+      padding: 0.6rem;
+      
+      span {
+        font-size: 0.9rem;
+
+        &.price {
+          margin: 0 0.5rem;
+          padding: 0.2rem 0.5rem;
+          min-width: 55px;
+        }
+      }
+
+      button {
+        width: 28px;
+        height: 28px;
+        font-size: 1.1rem;
+      }
+    }
+  }
+
+  .button-group {
     flex-direction: column;
     width: 100%;
-  }
-
-  .burger-control-item {
-    width: 100%;
-    margin-bottom: 0.5rem;
-  }
-
-  .reset-button,
-  .order-button {
-    width: 100%;
-    font-size: 1rem;
+    
+    button {
+      width: 100%;
+      margin: 0.25rem 0;
+    }
   }
 }
