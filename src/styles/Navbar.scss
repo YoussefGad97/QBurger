@@ -42,6 +42,10 @@
     }
   }
 
+  .mobile-controls {
+    display: none;
+  }
+
   .navbar-nav {
     margin-right: 10%;
     
@@ -75,11 +79,63 @@
   }
 
   .navbar-toggler {
+    width: 30px;
+    height: 30px;
+    position: relative;
     color: white;
-    border-color: rgba(255, 255, 255, 0.1);
+    border: none;
+    background: transparent;
+    padding: 0;
+    transition: all 0.3s ease-in-out;
 
     &:focus {
-      box-shadow: 0 0 0 2px rgba(248, 120, 16, 0.5);
+      box-shadow: none;
+      outline: none;
+    }
+
+    .navbar-toggler-icon {
+      background-image: none;
+      position: relative;
+      width: 100%;
+      height: 2px;
+      background-color: white;
+      display: inline-block;
+      transition: all 0.3s ease-in-out;
+
+      &::before,
+      &::after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 2px;
+        background-color: white;
+        left: 0;
+        transition: all 0.3s ease-in-out;
+      }
+
+      &::before {
+        top: -8px;
+      }
+
+      &::after {
+        bottom: -8px;
+      }
+    }
+
+    &.open {
+      .navbar-toggler-icon {
+        background-color: transparent;
+
+        &::before {
+          top: 0;
+          transform: rotate(45deg);
+        }
+
+        &::after {
+          bottom: 0;
+          transform: rotate(-45deg);
+        }
+      }
     }
   }
 
@@ -124,19 +180,63 @@
 
 @media (max-width: 992px) {
   .custom-navbar {
+    padding: 0.5rem 1rem;
     background-color: rgba(0, 0, 0, 0.9);
+
+    .mobile-controls {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .mobile-basket-btn {
+      order: 1;
+    }
+
+    .navbar-toggler {
+      order: 2;
+    }
+
+    .navbar-collapse {
+      position: fixed;
+      top: 73px; 
+      left: 0;
+      width: 100%;
+      height: calc(100vh - 73px);
+      background-color: rgba(0, 0, 0, 0.95);
+      padding: 1rem;
+      transform: translateX(100%);
+      transition: transform 0.3s ease-in-out;
+      overflow-y: auto;
+
+      &.show {
+        transform: translateX(0);
+      }
+    }
 
     .navbar-nav {
       margin-right: 0;
       padding: 1rem 0;
+      text-align: center;
 
       .nav-link {
         margin: 0.5rem 0;
+        font-size: 1.2rem;
+        padding: 0.5rem 0;
+
+        &::after {
+          display: none;
+        }
       }
+    }
+
+    .basket-desktop {
+      display: none;
     }
 
     .user-dropdown {
       margin: 1rem 0;
+      justify-content: center;
       
       .MuiMenu-paper {
         width: 100%;
@@ -145,5 +245,3 @@
     }
   }
 }
-
-

@@ -12,6 +12,7 @@ import { useBasket } from '../contexts/BasketContext';
 function Navbar() {
   const [prevScrollPos, setPrevScrollPos] = useState(0);
   const [visible, setVisible] = useState(true);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user, logout } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
@@ -41,6 +42,10 @@ function Navbar() {
     handleMenuClose();
   };
 
+  const toggleMobileMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
   // Navigation items
   const navItems = [
     { id: 'landing', text: 'Home' },
@@ -63,21 +68,48 @@ function Navbar() {
           Q-Burger
         </Link>
 
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-        >
-          <span className="navbar-toggler-icon"></span>
-        </button>
+        <div className="mobile-controls">
+          <IconButton
+            color="inherit"
+            onClick={() => navigate('/basket')}
+            className="mobile-basket-btn"
+          >
+            <Badge 
+              badgeContent={getTotalItems()} 
+              color="error"
+              sx={{
+                '& .MuiBadge-badge': {
+                  backgroundColor: getTotalItems() > 0 ? '#e67e22' : 'inherit',
+                  color: 'white'
+                }
+              }}
+            >
+              <ShoppingBasketIcon 
+                sx={{ 
+                  color: getTotalItems() > 0 ? '#e67e22' : 'white',
+                  fontSize: '1.5rem'
+                }} 
+              />
+            </Badge>
+          </IconButton>
 
-        <div className="collapse navbar-collapse justify-content-end" id="navbarNav">
+          <button
+            className={`navbar-toggler ${isMenuOpen ? 'open' : ''}`}
+            type="button"
+            onClick={toggleMobileMenu}
+            aria-expanded={isMenuOpen}
+            aria-label="Toggle navigation"
+          >
+            <span className="navbar-toggler-icon"></span>
+          </button>
+        </div>
+
+        <div className={`collapse navbar-collapse ${isMenuOpen ? 'show' : ''}`} id="navbarNav">
           <ul className="navbar-nav">
             {navItems.map((item) => (
               <li className="nav-item" key={item.id}>
                 {item.text === 'Menu' ? (
-                  <Link className="nav-link" to="/menu">
+                  <Link className="nav-link" to="/menu" onClick={() => setIsMenuOpen(false)}>
                     {item.text}
                   </Link>
                 ) : isHomePage ? (
@@ -86,18 +118,19 @@ function Navbar() {
                     to={item.id}
                     smooth={true}
                     duration={500}
+                    onClick={() => setIsMenuOpen(false)}
                   >
                     {item.text}
                   </ScrollLink>
                 ) : (
-                  <Link className="nav-link" to={`/#${item.id}`}>
+                  <Link className="nav-link" to={`/#${item.id}`} onClick={() => setIsMenuOpen(false)}>
                     {item.text}
                   </Link>
                 )}
               </li>
             ))}
 
-            <li className="nav-item">
+            <li className="nav-item basket-desktop">
               <IconButton
                 color="inherit"
                 onClick={() => navigate('/basket')}
@@ -150,20 +183,20 @@ function Navbar() {
                   anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
                   transformOrigin={{ vertical: 'top', horizontal: 'right' }}
                 >
-                  <MenuItem onClick={() => navigate('/profile')}>Profile</MenuItem>
-                  <MenuItem onClick={() => navigate('/orders')}>Orders</MenuItem>
+                  <MenuItem onClick={() => { navigate('/profile'); handleMenuClose(); }}>Profile</MenuItem>
+                  <MenuItem onClick={() => { navigate('/orders'); handleMenuClose(); }}>Orders</MenuItem>
                   <MenuItem onClick={handleLogout}>Logout</MenuItem>
                 </Menu>
               </li>
             ) : (
               <>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/login">
+                  <Link className="nav-link" to="/login" onClick={() => setIsMenuOpen(false)}>
                     Login
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/signup">
+                  <Link className="nav-link" to="/signup" onClick={() => setIsMenuOpen(false)}>
                     Sign Up
                   </Link>
                 </li>
