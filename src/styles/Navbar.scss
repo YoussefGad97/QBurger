@@ -201,6 +201,20 @@
       display: flex;
       align-items: center;
       gap: 1rem;
+
+      .user-icon {
+        display: block;
+        order: 1;
+        margin-right: 0;
+      }
+
+      .basket-icon {
+        order: 2;
+      }
+
+      .hamburger-menu {
+        order: 3;
+      }
     }
 
     .mobile-basket-btn {

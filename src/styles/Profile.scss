@@ -375,3 +375,32 @@
     }
   }
 }
+
+@media (max-width: 768px) {
+  .profile-page {
+    padding: 4rem 1rem 1rem;
+    background-size: cover;
+
+    .profile-container {
+      padding: 1rem;
+
+      .welcome-text {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .card-input-container {
+        padding: 1rem;
+
+        .card-preview {
+          height: 180px;
+          margin-bottom: 1.5rem;
+        }
+      }
+
+      .MuiTextField-root {
+        margin-bottom: 1rem;
+      }
+    }
+  }
+}
