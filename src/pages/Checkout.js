@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useBasket } from '../contexts/BasketContext';
 import { useAuth } from '../contexts/AuthContext';
@@ -60,6 +60,8 @@ const Checkout = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [isEmailSent, setIsEmailSent] = useState(false);
+
+  const receiptRef = useRef(null);
 
   const calculateTotal = () => {
     return basketItems.reduce((total, item) => total + item.price, 0);
@@ -206,6 +208,11 @@ const Checkout = () => {
     localStorage.setItem('last_order_details', JSON.stringify(order));
     setShowSuccess(true);
     clearBasket();
+
+    // Scroll to the receipt
+    if (receiptRef.current) {
+      receiptRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   const handleBackToHome = () => {
@@ -483,7 +490,7 @@ const Checkout = () => {
         </div>
 
         {showSuccess && orderDetails && (
-          <div className="success-overlay">
+          <div className="success-overlay" ref={receiptRef}>
             <div className="success-modal">
               <div className="success-header">
                 <i className="fas fa-check-circle"></i>
