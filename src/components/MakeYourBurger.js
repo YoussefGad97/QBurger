@@ -24,6 +24,7 @@ import Onion from "../assets/Ingredients/Onion.png";
 import Pickles from "../assets/Ingredients/Pickles.png";
 import OnionRings from "../assets/Ingredients/Rings.png";
 import BotBun1 from "../assets/Ingredients/SesameBot.png";
+import CustomBurger from "../assets/images/CustomBurger.jpg";
 
 const ingredientsList = [
   { name: "Top Bun", image: TopBun1, price: 2.00 },
@@ -171,7 +172,7 @@ const MakeYourBurger = () => {
       id: 'custom-' + Date.now(),
       name: generateCustomBurgerName(selectedIngredients),
       price: calculateTotal,
-      image: null,
+      image: CustomBurger,
       ingredients: selectedIngredients,
       quantity: 1,
       isCustom: true
