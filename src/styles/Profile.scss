@@ -403,4 +403,12 @@
       }
     }
   }
+
+  .navbar {
+    .profile-icon {
+      position: absolute;  
+      left: calc(basket-icon-width + spacing);
+      // Ensure to adjust the spacing as needed
+    }
+  }
 }

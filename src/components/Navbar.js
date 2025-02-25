@@ -69,6 +69,26 @@ function Navbar() {
         </Link>
 
         <div className="mobile-controls">
+          {user && (
+            <IconButton
+              color="inherit"
+              onClick={handleMenuOpen}
+              sx={{ p: 0, ml: 2 }}
+              aria-label="user menu"
+            >
+              <Avatar 
+                alt={displayName}
+                sx={{ 
+                  bgcolor: '#F87810',
+                  width: 40,
+                  height: 40,
+                  border: '2px solid white'
+                }}
+              >
+                {firstLetter}
+              </Avatar>
+            </IconButton>
+          )}
           <IconButton
             color="inherit"
             onClick={() => navigate('/basket')}
@@ -129,7 +149,27 @@ function Navbar() {
                 )}
               </li>
             ))}
-
+            {user && window.innerWidth > 992 && (
+              <li className="nav-item">
+                <IconButton
+                  onClick={handleMenuOpen}
+                  sx={{ p: 0, ml: 2 }}
+                  aria-label="user menu"
+                >
+                  <Avatar 
+                    alt={displayName}
+                    sx={{ 
+                      bgcolor: '#F87810',
+                      width: 40,
+                      height: 40,
+                      border: '2px solid white'
+                    }}
+                  >
+                    {firstLetter}
+                  </Avatar>
+                </IconButton>
+              </li>
+            )}
             <li className="nav-item basket-desktop">
               <IconButton
                 color="inherit"
@@ -158,24 +198,6 @@ function Navbar() {
 
             {user ? (
               <li className="nav-item">
-                <IconButton
-                  onClick={handleMenuOpen}
-                  sx={{ p: 0, ml: 2 }}
-                  aria-label="user menu"
-                >
-                  <Avatar 
-                    alt={displayName}
-                    sx={{ 
-                      bgcolor: '#F87810',
-                      width: 40,
-                      height: 40,
-                      border: '2px solid white'
-                    }}
-                  >
-                    {firstLetter}
-                  </Avatar>
-                </IconButton>
-
                 <Menu
                   anchorEl={anchorEl}
                   open={Boolean(anchorEl)}
@@ -183,7 +205,6 @@ function Navbar() {
                   anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
                   transformOrigin={{ vertical: 'top', horizontal: 'right' }}
                 >
-                  <MenuItem onClick={() => { navigate('/profile'); handleMenuClose(); }}>Profile</MenuItem>
                   <MenuItem onClick={() => { navigate('/orders'); handleMenuClose(); }}>Orders</MenuItem>
                   <MenuItem onClick={handleLogout}>Logout</MenuItem>
                 </Menu>
