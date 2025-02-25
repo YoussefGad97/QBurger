@@ -205,7 +205,7 @@ function Navbar() {
                   anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
                   transformOrigin={{ vertical: 'top', horizontal: 'right' }}
                 >
-                  <MenuItem onClick={() => { navigate('/orders'); handleMenuClose(); }}>Orders</MenuItem>
+                  <MenuItem onClick={() => { navigate('/profile'); handleMenuClose(); }}>Profile</MenuItem>
                   <MenuItem onClick={handleLogout}>Logout</MenuItem>
                 </Menu>
               </li>

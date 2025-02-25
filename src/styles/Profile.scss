@@ -2,7 +2,7 @@
   min-height: 100vh;
   padding: 6rem 2rem 2rem;
   background: url("../assets/images/ProfilePageBack.jpg") no-repeat center center;
-  background-size: contain;
+  background-size: cover;
 
   .profile-container {
     max-width: 800px;
@@ -394,7 +394,7 @@
 
         .card-preview {
           height: 180px;
-          margin-bottom: 1.5rem;
+          margin-bottom: 3rem;
         }
       }
 
