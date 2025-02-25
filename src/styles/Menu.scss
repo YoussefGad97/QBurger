@@ -11,6 +11,7 @@
     flex-direction: column;
     gap: 20px; // Space between menu items
 
+
     .menu-item {
       background-color: #1e1e1e; // Darker background for menu items
       border-radius: 8px;
@@ -36,5 +37,18 @@
         margin-top: 10px; // Space above the button
       }
     }
+  }
+}
+
+@media (max-width: 768px) {
+  .menu-container {
+    .menu-items {
+      flex-direction: column; // Ensure items stack vertically
+      padding: 10px; // Add padding for mobile view
+    }
+  }
+
+  .section-title{
+    padding-top: 80px; // Increase this value to lower the H2 further
   }
 }
